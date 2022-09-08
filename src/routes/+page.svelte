@@ -6,7 +6,7 @@
 
 	import { onMount } from 'svelte';
 	import { equals, type Quiz } from '$lib/quiz';
-	import { overlay, config } from '$lib/stores';
+	import { overlay, config, type Config } from '$lib/stores';
 
 	let status: 'correct' | 'wrong' | 'failed' | 'end' | null = null;
 	let userInput = '';
@@ -45,15 +45,17 @@
 		showHint = false;
 	}
 
-	onMount(newGroup);
-	async function newGroup() {
+	onMount(() => newGroup($config));
+	async function newGroup(cfg: Config) {
 		init();
+
+		$config = cfg;
 
 		failed = [];
 
 		loading = true;
 		try {
-			const res = await fetch(`/api/random?amount=${groupSize}`);
+			const res = await fetch(`/api/random?amount=${cfg.groupSize}`);
 			quizzes = await res.json();
 			index = 0;
 		} catch (e) {
@@ -102,15 +104,14 @@
 
 <h1>漢字組直しクイズ</h1>
 
-<Overlay enabled={status === 'end'} on:click={newGroup}>
+<Overlay enabled={status === 'end'}>
 	<GameOver
 		lastGroupSize={groupSize}
 		{maxRetry}
 		{quizzes}
 		{failed}
 		on:newgame={({ detail }) => {
-			({ groupSize, maxRetry } = detail);
-			newGroup();
+			newGroup(detail);
 		}}
 	/>
 </Overlay>
@@ -118,9 +119,8 @@
 <Overlay enabled={startup}>
 	<Splash
 		on:newgame={({ detail }) => {
-			({ groupSize, maxRetry } = detail);
+			newGroup(detail);
 			startup = false;
-			newGroup();
 		}}
 	/>
 </Overlay>
