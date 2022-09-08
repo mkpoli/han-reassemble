@@ -6,3 +6,8 @@ declare namespace App {
 	// interface PageData {}
 	// interface Platform {}
 }
+
+declare module '*.tsv' {
+	const value: unknown[];
+	export default value;
+}
