@@ -24,14 +24,16 @@
 	<div>{lastGroupSize - failed.length}/{lastGroupSize}</div>
 
 	{#if quizzes}
-		<div class="result">
+		<ol class="result">
 			{#each quizzes as quiz, i}
-				<div class="result-item" class:failed={failed.includes(i)}>
-					<div class="anagram">{quiz.anagram}</div>
-					<div class="lemma">{quiz.lemma}</div>
-				</div>
+				<li class:failed={failed.includes(i)}>
+					<div class="result-item">
+						<div class="anagram">{quiz.anagram}</div>
+						<div class="lemma">{quiz.lemma}</div>
+					</div>
+				</li>
 			{/each}
-		</div>
+		</ol>
 	{/if}
 
 	<Settings bind:groupSize bind:maxRetry />
@@ -62,19 +64,17 @@
 	}
 
 	.result {
-		display: grid;
-		grid-template-columns: auto auto;
-		gap: 0.5em;
-		max-height: 50vh;
+		max-height: 40vh;
 		overflow-y: auto;
 		text-align: center;
 	}
 
-	.result-item {
-		display: contents;
+	li.failed {
+		color: var(--color-error);
 	}
 
-	.result-item.failed {
-		color: var(--error-color);
+	.result-item {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
 	}
 </style>
