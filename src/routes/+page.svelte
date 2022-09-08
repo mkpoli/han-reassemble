@@ -25,9 +25,6 @@
 	let quizzes: Quiz[] = [];
 	$: currentQuiz = quizzes[index];
 
-	$: console.log('quizzes', quizzes);
-	$: console.log('currentQuiz', currentQuiz);
-
 	// let correct = false;
 	// let twitterShareText: string
 	// $: if (lemma && anagram) {
@@ -101,8 +98,6 @@
 			}, 1000);
 		}
 	}
-
-	$: console.log('status', status);
 </script>
 
 <h1>漢字組直しクイズ</h1>
