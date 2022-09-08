@@ -19,6 +19,9 @@
 			"$components/*": [
 				"src/components/*"
 			],
+			"$assets/*": [
+				"src/assets/*"
+			],
 		}
 	}
 	// Path aliases are handled by https://kit.svelte.dev/docs/configuration#alias

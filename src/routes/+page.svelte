@@ -2,23 +2,25 @@
 	import GameOver from '$components/GameOver.svelte';
 	import Overlay from '$components/Overlay.svelte';
 	import Prompt from '$components/Prompt.svelte';
+	import Splash from '$components/Splash.svelte';
 
 	import { onMount } from 'svelte';
 	import { equals, type Quiz } from '$lib/quiz';
-	import { overlay } from '$lib/stores';
+	import { overlay, config } from '$lib/stores';
 
 	let status: 'correct' | 'wrong' | 'failed' | 'end' | null = null;
 	let userInput = '';
 	let failed: number[] = [];
 	let loading = false;
 	let retry: number = 0;
-	let maxRetry = 2;
 	let index = 0;
 	let showHint = false;
 
-	// let groupSize = 10;
-	// let groupSize = 10;
-	let groupSize = 2;
+	let startup = true;
+
+	let groupSize: number;
+	let maxRetry: number;
+	$: ({ groupSize, maxRetry } = $config);
 
 	let quizzes: Quiz[] = [];
 	$: currentQuiz = quizzes[index];
@@ -38,8 +40,6 @@
 	//   twitterShareURL = twitterShareURL
 	// }
 	// $: console.log(twitterShareURL)
-
-	// TODO: a set of game
 
 	function init() {
 		status = null;
@@ -115,6 +115,16 @@
 		{failed}
 		on:newgame={({ detail }) => {
 			({ groupSize, maxRetry } = detail);
+			newGroup();
+		}}
+	/>
+</Overlay>
+
+<Overlay enabled={startup}>
+	<Splash
+		on:newgame={({ detail }) => {
+			({ groupSize, maxRetry } = detail);
+			startup = false;
 			newGroup();
 		}}
 	/>

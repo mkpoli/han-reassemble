@@ -1,8 +1,11 @@
 <script lang="ts">
-	import type { Quiz } from '$lib/quiz';
+	import screenshot from '$assets/screenshot.png';
+
+	import Settings from './Settings.svelte';
+
+	import { config } from '$lib/stores';
 
 	import { createEventDispatcher } from 'svelte';
-	import Settings from './Settings.svelte';
 	const dispatch = createEventDispatcher<{
 		newgame: {
 			groupSize: number;
@@ -10,36 +13,23 @@
 		};
 	}>();
 
-	export let maxRetry: number;
-	export let lastGroupSize: number;
-	export let quizzes: Quiz[];
-	export let failed: number[];
-
-	$: groupSize = lastGroupSize;
+	let { groupSize, maxRetry } = $config;
 </script>
 
 <div class="dialog">
-	<h2>GAME OVER!</h2>
+	<h2>ゲーム説明</h2>
 
-	<div>{lastGroupSize - failed.length}/{lastGroupSize}</div>
+	<div>漢字を組み換えて、熟語を作ろう！</div>
 
-	{#if quizzes}
-		<div class="result">
-			{#each quizzes as quiz, i}
-				<div class="result-item" class:failed={failed.includes(i)}>
-					<div class="anagram">{quiz.anagram}</div>
-					<div class="lemma">{quiz.lemma}</div>
-				</div>
-			{/each}
-		</div>
-	{/if}
+	<img src={screenshot} alt="Screenshot" />
 
 	<Settings bind:groupSize bind:maxRetry />
 
 	<button
+		class="primary"
 		on:click={() => {
 			dispatch('newgame', { groupSize, maxRetry });
-		}}>Next Game</button
+		}}>スタート！</button
 	>
 </div>
 
@@ -76,5 +66,9 @@
 
 	.result-item.failed {
 		color: var(--error-color);
+	}
+
+	img {
+		max-width: 25vw;
 	}
 </style>
