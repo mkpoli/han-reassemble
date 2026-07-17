@@ -1,7 +1,14 @@
 <script lang="ts">
-	import { overlay } from '$lib/stores';
-	export let enabled = false;
-	$: $overlay = enabled;
+	import { createBubbler } from 'svelte/legacy';
+
+	const bubble = createBubbler();
+	import { overlay } from '$lib/states.svelte';
+	interface Props {
+		enabled?: boolean;
+		children?: import('svelte').Snippet;
+	}
+
+	let { enabled, children }: Props = $props();
 </script>
 
 <!-- <svelte:body> 
@@ -12,9 +19,9 @@
 
 <div class="overlay" class:hidden={!enabled}>
 	<div class="foreground">
-		<slot />
+		{@render children?.()}
 	</div>
-	<div class="background" on:click />
+	<div class="background" onclick={bubble('click')}></div>
 </div>
 
 <style>

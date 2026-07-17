@@ -3,7 +3,7 @@
 
 	import Settings from './Settings.svelte';
 
-	import { config } from '$lib/stores';
+	import { config } from '$lib/states.svelte';
 
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher<{
@@ -13,7 +13,7 @@
 		};
 	}>();
 
-	let { groupSize, maxRetry } = $config;
+	let { groupSize, maxRetry } = config.config;
 </script>
 
 <div class="dialog">

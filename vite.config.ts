@@ -1,9 +1,7 @@
 import { sveltekit } from '@sveltejs/kit/vite';
-import dsv from '@rollup/plugin-dsv'
-import type { UserConfig } from 'vite';
+import { defineConfig } from 'vite';
+import dsv from '@rollup/plugin-dsv';
 
-const config: UserConfig = {
-	plugins: [sveltekit(), dsv()],
-};
-
-export default config;
+export default defineConfig({
+	plugins: [sveltekit(), dsv()]
+});
