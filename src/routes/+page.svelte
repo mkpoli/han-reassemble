@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import GameOver from '$components/GameOver.svelte';
 	import Overlay from '$components/Overlay.svelte';
 	import Prompt from '$components/Prompt.svelte';
@@ -6,24 +8,23 @@
 
 	import { onMount } from 'svelte';
 	import { equals, type Quiz } from '$lib/quiz';
-	import { overlay, config, type Config } from '$lib/stores';
+	import { overlay, config, type Config } from '$lib/states.svelte';
 
-	let status: 'correct' | 'wrong' | 'failed' | 'end' | null = null;
-	let userInput = '';
-	let failed: number[] = [];
+	let status: 'correct' | 'wrong' | 'failed' | 'end' | null = $state(null);
+	let userInput = $state('');
+	let failed: number[] = $state([]);
 	let loading = false;
-	let retry: number = 0;
-	let index = 0;
-	let showHint = false;
+	let retry: number = $state(0);
+	let index = $state(0);
+	let showHint = $state(false);
 
-	let startup = true;
+	let startup = $state(true);
 
-	let groupSize: number;
-	let maxRetry: number;
-	$: ({ groupSize, maxRetry } = $config);
+	let groupSize: number = $derived(config.config.groupSize);
+	let maxRetry: number = $derived(config.config.maxRetry);
 
-	let quizzes: Quiz[] = [];
-	$: currentQuiz = quizzes[index];
+	let quizzes: Quiz[] = $state([]);
+	let currentQuiz = $derived(quizzes[index]);
 
 	// let correct = false;
 	// let twitterShareText: string
@@ -45,11 +46,11 @@
 		showHint = false;
 	}
 
-	onMount(() => newGroup($config));
+	onMount(() => newGroup(config.config));
 	async function newGroup(cfg: Config) {
 		init();
 
-		$config = cfg;
+		config.config = cfg;
 
 		failed = [];
 
@@ -125,7 +126,7 @@
 	/>
 </Overlay>
 
-<main inert={$overlay ? true : undefined}>
+<main inert={overlay ? true : undefined}>
 	{#if currentQuiz}
 		<div class="anagram">
 			{#if status === 'correct'}
@@ -142,7 +143,7 @@
 			type="text"
 			class:wrong={status === 'wrong'}
 			bind:value={userInput}
-			on:keyup={(event) => {
+			onkeyup={(event) => {
 				if (event.key === 'Enter') {
 					check();
 				}
@@ -156,21 +157,21 @@
 		{/if}
 
 		<button
-			on:click={check}
+			onclick={check}
 			class="primary"
 			disabled={status === 'correct' || status === 'failed' ? true : false}
 		>
 			{status === 'correct' || status === 'failed' ? '次の問題' : '答える'}
 		</button>
 		<button
-			on:click={() => {
+			onclick={() => {
 				showHint = !showHint;
 			}}>ヒント</button
 		>
 	</section>
 </main>
 
-<footer inert={$overlay ? true : undefined}>
+<footer inert={overlay ? true : undefined}>
 	<p>
 		このゲームは、YouTubeチャンネル <a href="https://www.youtube.com/c/QuizKnock">QuizKnock</a>
 		の動画「<a href="https://www.youtube.com/watch?v=vuV5EUoQnzo"
