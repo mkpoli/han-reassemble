@@ -79,7 +79,7 @@
 		feedback = null;
 	}
 	function submit() {
-		if (!current || !answer.trim() || feedback === 'correct' || feedback === 'failed') return;
+		if (!current || !answer.trim() || feedback !== null) return;
 		if (equals(answer, current.lemma)) {
 			feedback = 'correct';
 			outcomes = [...outcomes, { quiz: current, solved: true }];
@@ -142,6 +142,7 @@
 							type="button"
 							class:chosen={difficulty === item.value}
 							aria-pressed={difficulty === item.value}
+							disabled={loading}
 							onclick={() => (difficulty = item.value)}
 							><strong>{item.name}</strong><small>{item.detail}</small></button
 						>
@@ -211,8 +212,10 @@
 								class="primary"
 								type="button"
 								onclick={next}>{index + 1 === quizzes.length ? '結果を見る' : '次の問題'} →</button
-							>{:else}<button class="primary" type="submit" disabled={!answer.trim()}
-								>答える →</button
+							>{:else}<button
+								class="primary"
+								type="submit"
+								disabled={!answer.trim() || feedback === 'wrong'}>答える →</button
 							>{/if}
 					</form>
 					<div class="feedback" aria-live="polite">
@@ -220,9 +223,14 @@
 							>{:else if feedback === 'failed'}<span class="error"
 								>答えは {current.lemma} でした</span
 							>{:else if feedback === 'wrong'}<span class="error">もう一度考えてみよう</span
-							>{:else if hint}<span>ヒント：最初の文字は「{[...current.lemma][0]}」</span
 							>{:else}<span>文字の順番はどちらでも正解です</span>{/if}
 					</div>
+					{#if hint && feedback !== 'correct' && feedback !== 'failed'}<div
+							class="feedback"
+							aria-live="polite"
+						>
+							ヒント：最初の文字は「{[...current.lemma][0]}」
+						</div>{/if}
 					<button class="hint" type="button" onclick={() => (hint = !hint)} aria-pressed={hint}
 						>{hint ? 'ヒントを隠す' : '✧ ヒントを見る'}</button
 					>
