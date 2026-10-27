@@ -120,7 +120,11 @@
 
 <svelte:head>
 	<title>漢字組直しクイズ</title>
-	<meta name="description" content="漢字のパーツを組み直して熟語を見つけよう。" />
+	<meta
+		name="description"
+		content="漢字のパーツを組み換えて二字熟語を作るクイズ。3つの難易度から選んで遊べます。"
+	/>
+	<link rel="canonical" href="https://han-reasm.mkpo.li/" />
 </svelte:head>
 
 <div class="shell">
