@@ -6,11 +6,24 @@
 	type Phase = 'start' | 'playing' | 'result';
 	type Outcome = { quiz: Quiz; solved: boolean };
 	const levels: { value: Difficulty; name: string; detail: string; attempts: number }[] = [
-		{ value: 'easy', name: 'やさしい', detail: 'パーツ1〜2個・3回まで', attempts: 3 },
-		{ value: 'normal', name: 'ふつう', detail: 'パーツ3〜4個・3回まで', attempts: 3 },
-		{ value: 'hard', name: 'むずかしい', detail: 'パーツ5個以上・2回まで', attempts: 2 }
+		{ value: 'easy', name: 'やさしい', detail: 'パーツ1〜2個', attempts: 3 },
+		{ value: 'normal', name: 'ふつう', detail: 'パーツ3〜4個', attempts: 3 },
+		{ value: 'hard', name: 'むずかしい', detail: 'パーツ5個以上', attempts: 2 }
 	];
 	let difficulty: Difficulty = $state('normal');
+	let questionCount = $state<number | undefined>(10);
+	let attemptLimit = $state<number | undefined>(3);
+	let roundLimit = $state(3);
+	let settingsValid = $derived(
+		typeof questionCount === 'number' &&
+			Number.isInteger(questionCount) &&
+			questionCount >= 1 &&
+			questionCount <= 50 &&
+			typeof attemptLimit === 'number' &&
+			Number.isInteger(attemptLimit) &&
+			attemptLimit >= 1 &&
+			attemptLimit <= 6
+	);
 	let phase: Phase = $state('start');
 	let quizzes: Quiz[] = $state([]);
 	let outcomes: Outcome[] = $state([]);
@@ -62,16 +75,17 @@
 	}
 
 	async function start() {
-		if (loading) return;
+		if (loading || !settingsValid) return;
 		loading = true;
 		error = '';
 		chime('start');
 		try {
-			const response = await fetch(`/api/random?amount=10&difficulty=${difficulty}`);
+			const response = await fetch(`/api/random?amount=${questionCount}&difficulty=${difficulty}`);
 			if (!response.ok) throw new Error('Request failed');
 			const next: Quiz[] = await response.json();
 			if (!next.length) throw new Error('No puzzles');
 			quizzes = next;
+			roundLimit = attemptLimit!;
 			outcomes = [];
 			index = 0;
 			resetQuestion();
@@ -98,7 +112,7 @@
 			void focusAfterUpdate(() => nextButton);
 		} else {
 			attempts++;
-			feedback = attempts >= level.attempts ? 'failed' : 'wrong';
+			feedback = attempts >= roundLimit ? 'failed' : 'wrong';
 			if (feedback === 'failed') {
 				outcomes = [...outcomes, { quiz: current, solved: false }];
 				void focusAfterUpdate(() => nextButton);
@@ -146,7 +160,7 @@
 				<h2>ゲーム説明</h2>
 				<p class="lead">漢字を組み換えて、熟語を作ろう！</p>
 				<img class="example" src={exampleImage} alt="重・委・拉を組み換えて接種にする例" />
-				<div class="section-label">難易度 <span>全10問</span></div>
+				<div class="section-label">難易度</div>
 				<div class="levels" role="group" aria-label="難易度">
 					{#each levels as item (item.value)}
 						<button
@@ -154,12 +168,38 @@
 							class:chosen={difficulty === item.value}
 							aria-pressed={difficulty === item.value}
 							disabled={loading}
-							onclick={() => (difficulty = item.value)}
-							><strong>{item.name}</strong><small>{item.detail}</small></button
+							onclick={() => {
+								difficulty = item.value;
+								attemptLimit = item.attempts;
+							}}><strong>{item.name}</strong><small>{item.detail}</small></button
 						>
 					{/each}
 				</div>
-				<button class="primary start" onclick={start} disabled={loading}
+				<fieldset class="settings" disabled={loading}>
+					<legend>設定</legend>
+					<label
+						>問題数 <span>1〜50問</span><input
+							type="number"
+							min="1"
+							max="50"
+							step="1"
+							bind:value={questionCount}
+						/></label
+					>
+					<label
+						>解答回数 <span>1〜6回</span><input
+							type="number"
+							min="1"
+							max="6"
+							step="1"
+							bind:value={attemptLimit}
+						/></label
+					>
+				</fieldset>
+				{#if !settingsValid}<p class="settings-error" role="status">
+						設定の数字を範囲内の整数にしてください。
+					</p>{/if}
+				<button class="primary start" onclick={start} disabled={loading || !settingsValid}
 					>{loading ? '読み込み中…' : 'スタート！'}</button
 				>
 				{#if error}<p class="error" role="alert">{error}</p>{/if}
@@ -200,7 +240,7 @@
 				<div class="answer-area">
 					<div class="answer-heading">
 						<label for="answer">答えを入力</label><span
-							>残り{Math.max(0, level.attempts - attempts)}回</span
+							>残り{Math.max(0, roundLimit - attempts)}回</span
 						>
 					</div>
 					<form
