@@ -1,13 +1,14 @@
 <script lang="ts">
 	import { tick } from 'svelte';
+	import exampleImage from '../assets/screenshot.png';
 	import { equals, type Difficulty, type Quiz } from '../lib/quiz';
 
 	type Phase = 'start' | 'playing' | 'result';
 	type Outcome = { quiz: Quiz; solved: boolean };
 	const levels: { value: Difficulty; name: string; detail: string; attempts: number }[] = [
-		{ value: 'easy', name: 'やさしい', detail: 'パーツ 1〜2個 · 3回まで', attempts: 3 },
-		{ value: 'normal', name: 'ふつう', detail: 'パーツ 3〜4個 · 3回まで', attempts: 3 },
-		{ value: 'hard', name: 'むずかしい', detail: 'パーツ 5個以上 · 2回まで', attempts: 2 }
+		{ value: 'easy', name: 'やさしい', detail: 'パーツ1〜2個・3回まで', attempts: 3 },
+		{ value: 'normal', name: 'ふつう', detail: 'パーツ3〜4個・3回まで', attempts: 3 },
+		{ value: 'hard', name: 'むずかしい', detail: 'パーツ5個以上・2回まで', attempts: 2 }
 	];
 	let difficulty: Difficulty = $state('normal');
 	let phase: Phase = $state('start');
@@ -124,11 +125,7 @@
 
 <div class="shell">
 	<header class="topbar">
-		<div class="brand">
-			<span class="brand-mark">組</span><span
-				>漢字組直し<span class="brand-sub">KANJI REASSEMBLE</span></span
-			>
-		</div>
+		<h1>漢字組直しクイズ</h1>
 		<button
 			class="sound"
 			type="button"
@@ -142,17 +139,10 @@
 	<main>
 		{#if phase === 'start'}
 			<section class="intro panel">
-				<div class="eyebrow"><span class="dot"></span> KANJI PUZZLE</div>
-				<h1>漢字をほどいて、<br /><em>熟語を見つけよう。</em></h1>
-				<p class="lead">
-					バラバラになった漢字のパーツを組み直すと、<br class="desktop" />二字熟語になります。
-				</p>
-				<div class="example">
-					<span>たとえば</span><strong>交 子 栄</strong><span class="arrow">→</span><strong
-						>学校</strong
-					>
-				</div>
-				<div class="section-label">難易度を選ぶ <span>全10問</span></div>
+				<h2>ゲーム説明</h2>
+				<p class="lead">漢字を組み換えて、熟語を作ろう！</p>
+				<img class="example" src={exampleImage} alt="重・委・拉を組み換えて接種にする例" />
+				<div class="section-label">難易度 <span>全10問</span></div>
 				<div class="levels" role="group" aria-label="難易度">
 					{#each levels as item (item.value)}
 						<button
@@ -166,7 +156,7 @@
 					{/each}
 				</div>
 				<button class="primary start" onclick={start} disabled={loading}
-					>{loading ? '読み込み中…' : 'ゲームを始める'} <span>→</span></button
+					>{loading ? '読み込み中…' : 'スタート！'}</button
 				>
 				{#if error}<p class="error" role="alert">{error}</p>{/if}
 			</section>
@@ -174,8 +164,8 @@
 			<section class="game panel">
 				<div class="game-heading">
 					<div>
-						<div class="eyebrow"><span class="dot"></span> {level.name}</div>
-						<h1>パーツを組み直そう</h1>
+						<div class="game-level">{level.name}</div>
+						<h2>漢字を組み直そう</h2>
 					</div>
 					<div class="counter">
 						<strong>{String(index + 1).padStart(2, '0')}</strong><span>
@@ -206,7 +196,7 @@
 				<div class="answer-area">
 					<div class="answer-heading">
 						<label for="answer">答えを入力</label><span
-							>残り {Math.max(0, level.attempts - attempts)} 回</span
+							>残り{Math.max(0, level.attempts - attempts)}回</span
 						>
 					</div>
 					<form
@@ -230,15 +220,15 @@
 								class="primary"
 								type="button"
 								bind:this={nextButton}
-								onclick={next}>{index + 1 === quizzes.length ? '結果を見る' : '次の問題'} →</button
+								onclick={next}>{index + 1 === quizzes.length ? '結果を見る' : '次の問題'}</button
 							>{:else}<button
 								class="primary"
 								type="submit"
-								disabled={!answer.trim() || feedback === 'wrong'}>答える →</button
+								disabled={!answer.trim() || feedback === 'wrong'}>答える</button
 							>{/if}
 					</form>
 					<div class="feedback" aria-live="polite">
-						{#if feedback === 'correct'}<span class="success">✦ 正解！ {current.lemma}</span
+						{#if feedback === 'correct'}<span class="success">正解！ {current.lemma}</span
 							>{:else if feedback === 'failed'}<span class="error"
 								>答えは {current.lemma} でした</span
 							>{:else if feedback === 'wrong'}<span class="error">もう一度考えてみよう</span
@@ -251,16 +241,14 @@
 							ヒント：最初の文字は「{[...current.lemma][0]}」
 						</div>{/if}
 					<button class="hint" type="button" onclick={() => (hint = !hint)} aria-pressed={hint}
-						>{hint ? 'ヒントを隠す' : '✧ ヒントを見る'}</button
+						>{hint ? 'ヒントを隠す' : 'ヒントを見る'}</button
 					>
 				</div>
 			</section>
 		{:else}
 			<section class="result panel">
-				<div class="eyebrow"><span class="dot"></span> ROUND COMPLETE</div>
-				<h1 tabindex="-1" bind:this={resultHeading}>おつかれさま！</h1>
-				<p class="lead">今回の結果</p>
-				<div class="score"><strong>{score}</strong><span> / {quizzes.length} 問正解</span></div>
+				<h2 tabindex="-1" bind:this={resultHeading}>結果発表</h2>
+				<div class="score"><strong>{score}</strong><span> / {quizzes.length}問正解</span></div>
 				<ol class="results">
 					{#each outcomes as outcome, i (i)}<li>
 							<span class:success={outcome.solved} class:error={!outcome.solved}
@@ -274,7 +262,7 @@
 					class="primary start"
 					onclick={() => {
 						phase = 'start';
-					}}>もう一度遊ぶ →</button
+					}}>もう一度遊ぶ</button
 				>
 			</section>
 		{/if}
