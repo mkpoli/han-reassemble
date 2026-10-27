@@ -19,7 +19,7 @@
 <div class="dialog">
 	<h2>ゲーム説明</h2>
 
-	<div class="description">漢字を組み換えて、熟語を作ろう！</div>
+	<div class="description"><span>漢字を組み換えて、</span><span>熟語を作ろう！</span></div>
 
 	<img src={screenshot} alt="重・委・拉を組み換えて接種にする例" />
 
@@ -37,6 +37,9 @@
 	h2 {
 		font-size: 1.6rem;
 		margin: 0;
+	}
+	.description span {
+		display: inline-block;
 	}
 	.description {
 		font-size: 0.9em;
