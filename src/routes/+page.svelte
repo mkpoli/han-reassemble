@@ -1,19 +1,16 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
-
-	import GameOver from '$components/GameOver.svelte';
-	import Overlay from '$components/Overlay.svelte';
-	import Prompt from '$components/Prompt.svelte';
-	import Splash from '$components/Splash.svelte';
+	import GameOver from '#components/GameOver.svelte';
+	import Overlay from '#components/Overlay.svelte';
+	import Prompt from '#components/Prompt.svelte';
+	import Splash from '#components/Splash.svelte';
 
 	import { onMount } from 'svelte';
-	import { equals, type Quiz } from '$lib/quiz';
-	import { overlay, config, type Config } from '$lib/states.svelte';
+	import { equals, type Quiz } from '../lib/quiz';
+	import { overlay, config, type Config } from '../lib/states.svelte';
 
 	let status: 'correct' | 'wrong' | 'failed' | 'end' | null = $state(null);
 	let userInput = $state('');
 	let failed: number[] = $state([]);
-	let loading = false;
 	let retry: number = $state(0);
 	let index = $state(0);
 	let showHint = $state(false);
@@ -29,7 +26,7 @@
 	// let correct = false;
 	// let twitterShareText: string
 	// $: if (lemma && anagram) {
-	//   twitterShareText = `【漢字組直しクイズ】\n　10問中${n}問正解できたよ！これだけのヒントで正解できたよ🏆！すごい～🎉！\n\n「${quiz.paragraphs[0].substring(0, 64)}」\n\n▼あなたもわかるかな？😎▼\n`
+	//   twitterShareText = `【漢字組直しクイズ】\n 10問中${n}問正解できたよ！これだけのヒントで正解できたよ🏆！すごい～🎉！\n\n「${quiz.paragraphs[0].substring(0, 64)}」\n\n▼あなたもわかるかな？😎▼\n`
 	// }
 
 	// let twitterShareURL = new URL('https://quiz.mkpo.li/')
@@ -54,15 +51,12 @@
 
 		failed = [];
 
-		loading = true;
 		try {
 			const res = await fetch(`/api/random?amount=${cfg.groupSize}`);
 			quizzes = await res.json();
 			index = 0;
 		} catch (e) {
 			console.error(e);
-		} finally {
-			loading = false;
 		}
 	}
 
@@ -152,7 +146,7 @@
 
 		{#if currentQuiz && showHint}
 			<div class="hint">
-				文字数　{'○'.repeat(currentQuiz.lemma.length)}（{currentQuiz.lemma.length}文字）
+				文字数 {'○'.repeat(currentQuiz.lemma.length)}（{currentQuiz.lemma.length}文字）
 			</div>
 		{/if}
 

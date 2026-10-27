@@ -1,38 +1,14 @@
-# sv
+# 漢字組直しクイズ
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+漢字のパーツを組み直して熟語を当てるゲームです。
 
-## Creating a project
+## Development
 
-If you're seeing this, you've probably already done this step. Congrats!
-
-```sh
-# create a new project in the current directory
-npx sv create
-
-# create a new project in my-app
-npx sv create my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+Install dependencies with Bun, then start Vite:
 
 ```sh
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+bun install --frozen-lockfile
+bun run dev
 ```
 
-## Building
-
-To create a production version of your app:
-
-```sh
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+Run `bun run check`, `bun run lint`, and `bun run build` before submitting changes. The production build uses the SvelteKit Cloudflare adapter. `bun run deploy` builds and deploys the Worker configured in `wrangler.jsonc`; deploy only a clean, merged `master` commit.

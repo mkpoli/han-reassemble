@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Quiz } from '$lib/quiz';
+	import type { Quiz } from '../lib/quiz';
 
 	import { createEventDispatcher } from 'svelte';
 	import Settings from './Settings.svelte';
@@ -15,7 +15,7 @@
 	export let quizzes: Quiz[];
 	export let failed: number[];
 
-	$: groupSize = lastGroupSize;
+	let groupSize = lastGroupSize;
 </script>
 
 <div class="dialog">
@@ -25,7 +25,7 @@
 
 	{#if quizzes}
 		<ol class="result">
-			{#each quizzes as quiz, i}
+			{#each quizzes as quiz, i (i)}
 				<li class:failed={failed.includes(i)}>
 					<div class="result-item">
 						<div class="anagram">{quiz.anagram}</div>

@@ -1,4 +1,4 @@
-export let overlay = $state(false);
+export const overlay = $state(false);
 
 export type Config = {
 	groupSize: number;

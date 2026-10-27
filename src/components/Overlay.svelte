@@ -2,7 +2,6 @@
 	import { createBubbler } from 'svelte/legacy';
 
 	const bubble = createBubbler();
-	import { overlay } from '$lib/states.svelte';
 	interface Props {
 		enabled?: boolean;
 		children?: import('svelte').Snippet;
