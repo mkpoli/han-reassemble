@@ -203,7 +203,7 @@
 			aria-label="答え"
 			bind:value={userInput}
 			onkeydown={(event) => {
-				if (event.key === 'Enter' && !event.isComposing && event.keyCode !== 229) {
+				if (event.key === 'Enter' && !event.repeat && !event.isComposing && event.keyCode !== 229) {
 					event.preventDefault();
 					check();
 				}
