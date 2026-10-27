@@ -81,25 +81,13 @@
 		flex: 1;
 		min-width: 0;
 		padding: 0.45em 0.15em;
-		border: 1px solid #d2c9da;
-		border-radius: 0.3em;
-		background: #faf8fb;
-		color: #46384e;
 		font-size: 0.7em;
 		white-space: nowrap;
 	}
-	.difficulty-buttons button:hover {
-		border-color: #80638e;
-		background: #f2ebf6;
-	}
 	.difficulty-buttons button.selected {
-		border-color: #563973;
-		background: #563973;
+		border-color: var(--color-accent);
+		background: var(--color-accent);
 		color: white;
-	}
-	.difficulty-buttons button:focus-visible {
-		outline: 2px solid #80638e;
-		outline-offset: 2px;
 	}
 	.difficulty-detail {
 		display: block;
