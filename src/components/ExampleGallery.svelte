@@ -51,6 +51,63 @@
 				{ text: '料', paint: horizontal('#84a920', '#f32d2d') }
 			],
 			label: '才・斗・木・米を組み換えて材料にする例'
+		},
+		{
+			parts: [{ text: '好', paint: horizontal('#f21ec5', '#12aaa9') }],
+			answer: [
+				{ text: '女', paint: pink },
+				{ text: '子', paint: teal }
+			],
+			label: '好を組み換えて女子にする例'
+		},
+		{
+			parts: [
+				{ text: '相', paint: horizontal('#12aaa9', '#84a920') },
+				{ text: '票', paint: pink }
+			],
+			answer: [
+				{ text: '目', paint: green },
+				{ text: '標', paint: horizontal('#12aaa9', '#f21ec5') }
+			],
+			label: '相・票を組み換えて目標にする例'
+		},
+		{
+			parts: [
+				{ text: '日', paint: red },
+				{ text: '脱', paint: horizontal('#12aaa9', '#f21ec5') },
+				{ text: '言', paint: green }
+			],
+			answer: [
+				{ text: '説', paint: horizontal('#84a920', '#f21ec5') },
+				{ text: '明', paint: horizontal('#f32d2d', '#12aaa9') }
+			],
+			label: '日・脱・言を組み換えて説明にする例'
+		},
+		{
+			parts: [
+				{ text: '今', paint: blue },
+				{ text: '己', paint: pink },
+				{ text: '心', paint: teal },
+				{ text: '言', paint: green }
+			],
+			answer: [
+				{ text: '記', paint: horizontal('#84a920', '#f21ec5') },
+				{ text: '念', paint: vertical('#4824ff', '#12aaa9') }
+			],
+			label: '今・己・心・言を組み換えて記念にする例'
+		},
+		{
+			parts: [
+				{ text: '木', paint: teal },
+				{ text: '炎', paint: red },
+				{ text: '目', paint: pink },
+				{ text: '言', paint: green }
+			],
+			answer: [
+				{ text: '相', paint: horizontal('#12aaa9', '#f21ec5') },
+				{ text: '談', paint: horizontal('#84a920', '#f32d2d') }
+			],
+			label: '木・炎・目・言を組み換えて相談にする例'
 		}
 	];
 	const labels = ['重・委・拉を組み換えて接種にする例', ...examples.map((item) => item.label)];
