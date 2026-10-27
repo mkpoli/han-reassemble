@@ -189,11 +189,6 @@
 </svelte:head>
 
 <h1>漢字組直しクイズ</h1>
-<div class="sound-setting" inert={startup || status === 'end'}>
-	<button type="button" aria-pressed={sound} onclick={() => (sound = !sound)}
-		>{sound ? '♪ 効果音オン' : '♪ 効果音オフ'}</button
-	>
-</div>
 
 <Overlay enabled={status === 'end'} label="結果">
 	<GameOver
@@ -270,6 +265,11 @@
 			}}>ヒント</button
 		>
 	</section>
+	<div class="sound-setting">
+		<button type="button" aria-pressed={sound} onclick={() => (sound = !sound)}
+			>効果音：{sound ? 'オン' : 'オフ'}</button
+		>
+	</div>
 </main>
 
 <footer inert={startup || status === 'end'}>
@@ -354,18 +354,15 @@
 		line-height: 1.3;
 		font-size: clamp(1.7em, 6vw, 3em);
 		overflow: visible;
-		margin-bottom: 0;
 	}
 
 	.sound-setting {
-		max-width: 1024px;
-		margin: 0 auto;
 		text-align: right;
-		padding: 0 0.75em 0.5em;
 	}
 	.sound-setting button {
+		padding: 0.25em 0.5em;
 		font-size: 0.7em;
-		color: var(--color-accent);
+		color: #62576a;
 		background: transparent;
 	}
 
