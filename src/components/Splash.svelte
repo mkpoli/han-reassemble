@@ -81,14 +81,17 @@
 	}
 	@media (max-height: 650px) {
 		.dialog {
-			padding: 0.8em;
-			gap: 0.4em;
+			padding: 0.65em;
+			gap: 0.3em;
 		}
 		h2 {
-			font-size: 1.3rem;
+			font-size: 1.2rem;
 		}
 		img {
-			width: min(160px, 65%);
+			width: min(125px, 60%);
+		}
+		.description {
+			font-size: 0.8em;
 		}
 	}
 </style>
