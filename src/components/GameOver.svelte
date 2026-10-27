@@ -3,6 +3,8 @@
 	import type { Quiz } from '../lib/quiz';
 
 	import { createEventDispatcher } from 'svelte';
+	export let loading = false;
+	export let error = '';
 	import Settings from './Settings.svelte';
 	const dispatch = createEventDispatcher<{
 		newgame: {
@@ -39,7 +41,9 @@
 
 	<Settings bind:groupSize bind:maxRetry />
 
+	{#if error}<p role="alert">{error}</p>{/if}
 	<button
+		disabled={loading}
 		on:click={() => {
 			dispatch('newgame', { groupSize, maxRetry });
 		}}>Next Game</button

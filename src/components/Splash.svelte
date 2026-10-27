@@ -6,6 +6,8 @@
 	import { config } from '../lib/states.svelte';
 
 	import { createEventDispatcher } from 'svelte';
+	export let loading = false;
+	export let error = '';
 	const dispatch = createEventDispatcher<{
 		newgame: {
 			groupSize: number;
@@ -25,7 +27,9 @@
 
 	<Settings bind:groupSize bind:maxRetry />
 
+	{#if error}<p role="alert">{error}</p>{/if}
 	<button
+		disabled={loading}
 		class="primary"
 		on:click={() => {
 			dispatch('newgame', { groupSize, maxRetry });
