@@ -1,10 +1,20 @@
 <script lang="ts">
+	import type { Difficulty } from '../lib/quiz';
 	export let groupSize: number;
+	export let difficulty: Difficulty;
 	export let maxRetry: number;
 </script>
 
 <fieldset class="settings">
 	<legend>設定</legend>
+	<label class="difficulty"
+		>難易度
+		<select bind:value={difficulty}>
+			<option value="easy">やさしい（パーツ1〜2個）</option>
+			<option value="normal">ふつう（パーツ3〜4個）</option>
+			<option value="hard">むずかしい（パーツ5個以上）</option>
+		</select>
+	</label>
 	<div class="form">
 		<label for="group-size">問題数</label>
 		<input type="number" min={1} max={50} bind:value={groupSize} id="group-size" />
@@ -40,6 +50,21 @@
 		appearance: none;
 	}
 
+	.difficulty {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5em;
+	}
+	.difficulty select {
+		min-width: 0;
+		max-width: 100%;
+		padding: 0.4em;
+		border: 1px solid #ccc;
+		border-radius: 0.25em;
+		background: white;
+		color: inherit;
+	}
 	.settings .form {
 		display: grid;
 		grid-template-columns: auto auto;

@@ -80,10 +80,13 @@
 		loadError = '';
 		const nextConfig = {
 			groupSize: Math.min(50, Math.max(1, Math.trunc(Number(cfg.groupSize) || 10))),
+			difficulty: cfg.difficulty,
 			maxRetry: Math.min(5, Math.max(0, Math.trunc(Number(cfg.maxRetry) || 0)))
 		};
 		try {
-			const res = await fetch(`/api/random?amount=${nextConfig.groupSize}`);
+			const res = await fetch(
+				`/api/random?amount=${nextConfig.groupSize}&difficulty=${nextConfig.difficulty}`
+			);
 			if (!res.ok) throw new Error('Request failed');
 			const next: Quiz[] = await res.json();
 			if (!Array.isArray(next) || next.length === 0) throw new Error('No puzzles');
@@ -145,6 +148,7 @@
 	<GameOver
 		lastGroupSize={groupSize}
 		{maxRetry}
+		difficulty={config.config.difficulty}
 		{quizzes}
 		{failed}
 		{loading}
