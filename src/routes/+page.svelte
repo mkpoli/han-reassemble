@@ -80,10 +80,13 @@
 		loadError = '';
 		const nextConfig = {
 			groupSize: Math.min(50, Math.max(1, Math.trunc(Number(cfg.groupSize) || 10))),
+			difficulty: cfg.difficulty,
 			maxRetry: Math.min(5, Math.max(0, Math.trunc(Number(cfg.maxRetry) || 0)))
 		};
 		try {
-			const res = await fetch(`/api/random?amount=${nextConfig.groupSize}`);
+			const res = await fetch(
+				`/api/random?amount=${nextConfig.groupSize}&difficulty=${nextConfig.difficulty}`
+			);
 			if (!res.ok) throw new Error('Request failed');
 			const next: Quiz[] = await res.json();
 			if (!Array.isArray(next) || next.length === 0) throw new Error('No puzzles');
@@ -112,7 +115,7 @@
 	}
 
 	function check() {
-		if (status === 'correct' || status === 'wrong') {
+		if (!currentQuiz || !userInput.trim() || status === 'correct' || status === 'wrong') {
 			return;
 		}
 
@@ -159,6 +162,7 @@
 	<GameOver
 		lastGroupSize={groupSize}
 		{maxRetry}
+		difficulty={config.config.difficulty}
 		{quizzes}
 		{failed}
 		{loading}
@@ -196,9 +200,11 @@
 			type="text"
 			class:wrong={status === 'wrong'}
 			bind:this={answerInput}
+			aria-label="答え"
 			bind:value={userInput}
-			onkeyup={(event) => {
-				if (event.key === 'Enter') {
+			onkeydown={(event) => {
+				if (event.key === 'Enter' && !event.repeat && !event.isComposing && event.keyCode !== 229) {
+					event.preventDefault();
 					check();
 				}
 			}}
@@ -213,7 +219,11 @@
 		<button
 			onclick={check}
 			class="primary"
-			disabled={status === 'correct' || status === 'failed' ? true : false}
+			disabled={!currentQuiz ||
+				!userInput.trim() ||
+				status === 'correct' ||
+				status === 'wrong' ||
+				status === 'failed'}
 		>
 			{status === 'correct' || status === 'failed' ? '次の問題' : '答える'}
 		</button>
@@ -321,12 +331,13 @@
 		font-size: 2em;
 		text-align: center;
 
-		border: 1px solid var(--control-border);
-		border-radius: 0.15em;
+		border: 1px solid var(--input-border);
+		border-radius: 0.1em;
+		box-shadow: inset 0 1px 2px rgb(32 24 36 / 0.08);
 	}
 
 	input[type='text'] {
-		background: var(--control-surface);
+		background: white;
 	}
 
 	input.wrong {
