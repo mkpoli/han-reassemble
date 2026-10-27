@@ -57,8 +57,13 @@
 		backdrop-filter: blur(5px);
 	}
 	.foreground {
+		border-radius: 0.8em;
 		max-width: 100%;
 		max-height: calc(100dvh - 32px);
 		overflow-y: auto;
+	}
+	.foreground:focus-visible {
+		outline: 2px solid #a787bb;
+		outline-offset: 2px;
 	}
 </style>
