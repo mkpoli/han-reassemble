@@ -115,7 +115,7 @@
 	}
 
 	function check() {
-		if (status === 'correct' || status === 'wrong') {
+		if (!currentQuiz || !userInput.trim() || status === 'correct' || status === 'wrong') {
 			return;
 		}
 
@@ -200,9 +200,11 @@
 			type="text"
 			class:wrong={status === 'wrong'}
 			bind:this={answerInput}
+			aria-label="答え"
 			bind:value={userInput}
-			onkeyup={(event) => {
-				if (event.key === 'Enter') {
+			onkeydown={(event) => {
+				if (event.key === 'Enter' && !event.isComposing && event.keyCode !== 229) {
+					event.preventDefault();
 					check();
 				}
 			}}
@@ -217,7 +219,11 @@
 		<button
 			onclick={check}
 			class="primary"
-			disabled={status === 'correct' || status === 'failed' ? true : false}
+			disabled={!currentQuiz ||
+				!userInput.trim() ||
+				status === 'correct' ||
+				status === 'wrong' ||
+				status === 'failed'}
 		>
 			{status === 'correct' || status === 'failed' ? '次の問題' : '答える'}
 		</button>
