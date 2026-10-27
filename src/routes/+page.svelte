@@ -4,7 +4,7 @@
 	import Prompt from '#components/Prompt.svelte';
 	import Splash from '#components/Splash.svelte';
 
-	import { onMount, tick } from 'svelte';
+	import { onDestroy, onMount, tick } from 'svelte';
 	import { equals, type Quiz } from '../lib/quiz';
 	import { config, type Config } from '../lib/states.svelte';
 
@@ -14,6 +14,36 @@
 	let loadError = $state('');
 	let answerInput = $state<HTMLInputElement>();
 	let previewController: AbortController | undefined;
+	let sound = $state(true);
+	let audio: AudioContext | undefined;
+
+	function playFeedback(correct: boolean) {
+		if (!sound) return;
+		try {
+			audio ??= new AudioContext();
+			void audio.resume().catch(() => {});
+			const notes = correct ? [523, 659, 784] : [220, 185];
+			notes.forEach((frequency, i) => {
+				const oscillator = audio!.createOscillator();
+				const gain = audio!.createGain();
+				const at = audio!.currentTime + i * 0.09;
+				oscillator.frequency.value = frequency;
+				gain.gain.setValueAtTime(0.0001, at);
+				gain.gain.exponentialRampToValueAtTime(0.1, at + 0.02);
+				gain.gain.exponentialRampToValueAtTime(0.0001, at + 0.18);
+				oscillator.connect(gain);
+				gain.connect(audio!.destination);
+				oscillator.start(at);
+				oscillator.stop(at + 0.19);
+			});
+		} catch {
+			/* Sound is optional. */
+		}
+	}
+	onDestroy(() => {
+		if (audio) void audio.close().catch(() => {});
+	});
+
 	let failed: number[] = $state([]);
 	let retry: number = $state(0);
 	let index = $state(0);
@@ -121,12 +151,14 @@
 
 		if (equals(userInput, currentQuiz.lemma)) {
 			status = 'correct';
+			playFeedback(true);
 			setTimeout(() => {
 				status = null;
 				nextQuiz();
 			}, 1000);
 		} else {
 			status = 'wrong';
+			playFeedback(false);
 			retry++;
 
 			setTimeout(() => {
@@ -157,6 +189,11 @@
 </svelte:head>
 
 <h1>漢字組直しクイズ</h1>
+<div class="sound-setting" inert={startup || status === 'end'}>
+	<button type="button" aria-pressed={sound} onclick={() => (sound = !sound)}
+		>{sound ? '♪ 効果音オン' : '♪ 効果音オフ'}</button
+	>
+</div>
 
 <Overlay enabled={status === 'end'} label="結果">
 	<GameOver
@@ -318,6 +355,18 @@
 		font-size: clamp(1.7em, 6vw, 3em);
 		overflow: visible;
 		margin-bottom: 0;
+	}
+
+	.sound-setting {
+		max-width: 1024px;
+		margin: 0 auto;
+		text-align: right;
+		padding: 0 0.75em 0.5em;
+	}
+	.sound-setting button {
+		font-size: 0.7em;
+		color: var(--color-accent);
+		background: transparent;
 	}
 
 	.anagram {

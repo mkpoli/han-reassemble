@@ -2,16 +2,22 @@
 	import { fly, fade } from 'svelte/transition';
 	export let success: boolean = false;
 	export let failure: boolean = false;
+	const reducedMotion =
+		typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 </script>
 
-<div class="prompt" in:fly={{ y: -200, duration: 500 }} out:fade>
+<div
+	class="prompt"
+	in:fly={{ y: reducedMotion ? 0 : -40, duration: reducedMotion ? 0 : 250 }}
+	out:fade={{ duration: reducedMotion ? 0 : 150 }}
+>
 	<div class="content" class:success class:failure>
 		{#if success}
-			<iconify-icon icon="mdi:checkbox-marked-circle-outline" />
+			<iconify-icon icon="mdi:checkbox-marked-circle-outline"></iconify-icon>
 		{:else if failure}
-			<iconify-icon icon="mdi:close-circle-outline" />
+			<iconify-icon icon="mdi:close-circle-outline"></iconify-icon>
 		{:else}
-			<iconify-icon icon="gridicons:info-outline" />
+			<iconify-icon icon="gridicons:info-outline"></iconify-icon>
 		{/if}
 		<slot />
 	</div>
