@@ -41,7 +41,7 @@
 
 	<Settings bind:groupSize bind:maxRetry />
 
-	{#if error}<p role="alert">{error}</p>{/if}
+	{#if error}<p class="load-error" role="alert">{error}</p>{/if}
 	<button
 		disabled={loading}
 		on:click={() => {
@@ -51,6 +51,14 @@
 </div>
 
 <style>
+	.load-error {
+		max-width: 18em;
+		margin: 0 auto;
+		color: var(--color-error);
+		font-size: 0.75em;
+		line-height: 1.4;
+		overflow-wrap: anywhere;
+	}
 	h2 {
 		font-size: 2rem;
 		text-align: center;

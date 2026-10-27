@@ -27,7 +27,7 @@
 
 	<Settings bind:groupSize bind:maxRetry />
 
-	{#if error}<p role="alert">{error}</p>{/if}
+	{#if error}<p class="load-error" role="alert">{error}</p>{/if}
 	<button
 		disabled={loading}
 		class="primary"
@@ -38,6 +38,14 @@
 </div>
 
 <style>
+	.load-error {
+		max-width: 18em;
+		margin: 0 auto;
+		color: var(--color-error);
+		font-size: 0.75em;
+		line-height: 1.4;
+		overflow-wrap: anywhere;
+	}
 	h2 {
 		font-size: 1.6rem;
 		margin: 0;
@@ -70,5 +78,17 @@
 	img {
 		width: min(220px, 70%);
 		height: auto;
+	}
+	@media (max-height: 650px) {
+		.dialog {
+			padding: 0.8em;
+			gap: 0.4em;
+		}
+		h2 {
+			font-size: 1.3rem;
+		}
+		img {
+			width: min(160px, 65%);
+		}
 	}
 </style>

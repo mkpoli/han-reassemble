@@ -4,7 +4,7 @@
 	import Prompt from '#components/Prompt.svelte';
 	import Splash from '#components/Splash.svelte';
 
-	import { tick } from 'svelte';
+	import { onMount, tick } from 'svelte';
 	import { equals, type Quiz } from '../lib/quiz';
 	import { config, type Config } from '../lib/states.svelte';
 
@@ -13,6 +13,7 @@
 	let loading = $state(false);
 	let loadError = $state('');
 	let answerInput = $state<HTMLInputElement>();
+	let previewController: AbortController | undefined;
 	let failed: number[] = $state([]);
 	let retry: number = $state(0);
 	let index = $state(0);
@@ -46,9 +47,36 @@
 		showHint = false;
 	}
 
+	onMount(() => {
+		const controller = new AbortController();
+		previewController = controller;
+		void (async () => {
+			try {
+				const res = await fetch(`/api/random?amount=${config.config.groupSize}`, {
+					signal: controller.signal
+				});
+				if (!res.ok) return;
+				const preview: Quiz[] = await res.json();
+				if (
+					!controller.signal.aborted &&
+					startup &&
+					!loading &&
+					Array.isArray(preview) &&
+					preview.length > 0
+				) {
+					quizzes = preview;
+				}
+			} catch {
+				// Starting a round retries the request if the background preview fails.
+			}
+		})();
+		return () => controller.abort();
+	});
+
 	async function newGroup(cfg: Config) {
 		if (loading) return;
 		loading = true;
+		previewController?.abort();
 		loadError = '';
 		const nextConfig = {
 			groupSize: Math.min(50, Math.max(1, Math.trunc(Number(cfg.groupSize) || 10))),
@@ -68,7 +96,7 @@
 			await tick();
 			answerInput?.focus();
 		} catch {
-			loadError = '問題を読み込めませんでした。もう一度お試しください。';
+			loadError = '問題を読み込めませんでした。';
 		} finally {
 			loading = false;
 		}
