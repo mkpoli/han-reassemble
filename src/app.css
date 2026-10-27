@@ -48,7 +48,7 @@ h2:focus-visible {
 }
 .topbar {
 	position: relative;
-	padding: 38px 0 28px;
+	padding: 28px 0 18px;
 	text-align: center;
 }
 .topbar h1 {
@@ -71,7 +71,7 @@ h2:focus-visible {
 .sound {
 	position: absolute;
 	right: 0;
-	top: 45px;
+	top: 32px;
 }
 .sound:hover,
 .hint:hover {
@@ -92,6 +92,11 @@ main {
 .result {
 	text-align: center;
 }
+.intro {
+	max-width: 540px;
+	margin: 0 auto;
+	padding: 24px 30px;
+}
 h2 {
 	margin: 0;
 	font-size: 24px;
@@ -103,9 +108,9 @@ h2 {
 }
 .example {
 	display: block;
-	width: min(100%, 300px);
+	width: min(100%, 220px);
 	height: auto;
-	margin: 22px auto 28px;
+	margin: 12px auto 16px;
 }
 .section-label,
 .answer-heading {
@@ -134,7 +139,7 @@ h2 {
 	border-radius: 8px;
 	background: #faf9fb;
 	color: #39313f;
-	padding: 12px;
+	padding: 9px 10px;
 }
 .levels button:hover {
 	border-color: #a38bb2;
@@ -158,8 +163,8 @@ h2 {
 	gap: 24px;
 	align-items: center;
 	justify-content: center;
-	margin: 20px 0 0;
-	padding: 14px 16px 16px;
+	margin: 14px 0 0;
+	padding: 8px 12px 10px;
 	border: 1px solid #e4dfe8;
 	border-radius: 8px;
 }
@@ -209,7 +214,7 @@ h2 {
 }
 .start {
 	width: 100%;
-	margin-top: 18px;
+	margin-top: 14px;
 }
 .game-heading {
 	display: flex;
@@ -397,7 +402,7 @@ summary {
 		padding: 0 16px;
 	}
 	.topbar {
-		padding: 28px 0 20px;
+		padding: 22px 0 16px;
 	}
 	.topbar h1 {
 		font-size: 30px;
@@ -407,23 +412,22 @@ summary {
 		margin-top: 12px;
 	}
 	.panel {
-		padding: 26px 20px;
+		padding: 24px 20px;
 	}
 	.example {
-		width: min(100%, 250px);
-		margin: 18px auto 24px;
+		width: min(100%, 190px);
+		margin: 10px auto 14px;
 	}
 	.levels {
-		grid-template-columns: 1fr;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
 	}
 	.levels button {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		gap: 8px;
+		text-align: center;
+		padding: 8px 3px;
 	}
 	.levels small {
-		margin-top: 0;
+		margin-top: 4px;
+		font-size: 10px;
 	}
 	.settings {
 		gap: 12px;
@@ -445,6 +449,14 @@ summary {
 	}
 	.results {
 		grid-template-columns: 1fr;
+	}
+}
+@media (max-width: 360px) {
+	.lead {
+		font-size: 14px;
+	}
+	.levels strong {
+		font-size: 13px;
 	}
 }
 @media (prefers-reduced-motion: reduce) {
