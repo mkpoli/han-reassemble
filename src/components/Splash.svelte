@@ -27,6 +27,14 @@
 
 	<img src={screenshot} alt="重・委・拉を組み換えて接種にする例" />
 
+	<details class="tutorial">
+		<summary>はじめての方へ</summary>
+		<p>
+			漢字を部品に分けて組み直し、二字熟語を作ります。たとえば「重・委・拉」からは「接種」ができます。
+		</p>
+		<p>答えを入力して「答える」を押します。迷ったときは「ヒント」で文字数を確認できます。</p>
+	</details>
+
 	<Settings bind:groupSize bind:maxRetry bind:difficulty />
 
 	{#if error}<p class="load-error" role="alert">{error}</p>{/if}
@@ -76,6 +84,25 @@
 		box-sizing: border-box;
 		min-width: 0;
 		width: 100%;
+	}
+	.tutorial {
+		width: 100%;
+		font-size: 0.7em;
+		line-height: 1.5;
+		text-align: left;
+	}
+	.tutorial summary {
+		width: fit-content;
+		margin: 0 auto;
+		color: var(--color-accent);
+		cursor: pointer;
+	}
+	.tutorial summary:focus-visible {
+		outline: 2px solid #80638e;
+		outline-offset: 2px;
+	}
+	.tutorial p {
+		margin: 0.5em 0 0;
 	}
 	img {
 		width: min(220px, 70%);
