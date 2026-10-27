@@ -1,4 +1,5 @@
 <script lang="ts">
+	/* eslint-disable svelte/no-reactive-reassign */
 	import type { Quiz } from '../lib/quiz';
 
 	import { createEventDispatcher } from 'svelte';
@@ -15,7 +16,7 @@
 	export let quizzes: Quiz[];
 	export let failed: number[];
 
-	let groupSize = lastGroupSize;
+	$: groupSize = lastGroupSize;
 </script>
 
 <div class="dialog">
