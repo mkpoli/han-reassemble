@@ -139,6 +139,17 @@
 		content="漢字のパーツを組み換えて二字熟語を作るクイズ。3つの難易度から選んで遊べます。"
 	/>
 	<link rel="canonical" href="https://han-reasm.mkpo.li/" />
+	<meta property="og:type" content="website" />
+	<meta property="og:locale" content="ja_JP" />
+	<meta property="og:site_name" content="漢字組直しクイズ" />
+	<meta property="og:title" content="漢字組直しクイズ" />
+	<meta property="og:description" content="漢字のパーツを組み換えて二字熟語を作るクイズ。" />
+	<meta property="og:url" content="https://han-reasm.mkpo.li/" />
+	<meta property="og:image" content="https://han-reasm.mkpo.li/social-card.png" />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
+	<meta property="og:image:alt" content="重・委・拉を組み換えて接種にする例" />
+	<meta name="twitter:card" content="summary_large_image" />
 </svelte:head>
 
 <div class="shell">
