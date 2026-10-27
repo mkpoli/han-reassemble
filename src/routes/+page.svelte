@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { tick } from 'svelte';
 	import { equals, type Difficulty, type Quiz } from '../lib/quiz';
 
 	type Phase = 'start' | 'playing' | 'result';
@@ -24,6 +25,14 @@
 	let level = $derived(levels.find((item) => item.value === difficulty)!);
 	let score = $derived(outcomes.filter((item) => item.solved).length);
 	let audio: AudioContext | undefined;
+	let answerInput = $state<HTMLInputElement>();
+	let nextButton = $state<HTMLButtonElement>();
+	let resultHeading = $state<HTMLHeadingElement>();
+
+	async function focusAfterUpdate(target: () => HTMLElement | undefined) {
+		await tick();
+		target()?.focus();
+	}
 
 	function chime(kind: 'correct' | 'wrong' | 'start') {
 		if (!sound) return;
@@ -66,6 +75,7 @@
 			index = 0;
 			resetQuestion();
 			phase = 'playing';
+			void focusAfterUpdate(() => answerInput);
 		} catch {
 			error = '問題を読み込めませんでした。もう一度お試しください。';
 		} finally {
@@ -84,18 +94,25 @@
 			feedback = 'correct';
 			outcomes = [...outcomes, { quiz: current, solved: true }];
 			chime('correct');
+			void focusAfterUpdate(() => nextButton);
 		} else {
 			attempts++;
 			feedback = attempts >= level.attempts ? 'failed' : 'wrong';
-			if (feedback === 'failed') outcomes = [...outcomes, { quiz: current, solved: false }];
+			if (feedback === 'failed') {
+				outcomes = [...outcomes, { quiz: current, solved: false }];
+				void focusAfterUpdate(() => nextButton);
+			}
 			chime('wrong');
 		}
 	}
 	function next() {
-		if (index + 1 >= quizzes.length) phase = 'result';
-		else {
+		if (index + 1 >= quizzes.length) {
+			phase = 'result';
+			void focusAfterUpdate(() => resultHeading);
+		} else {
 			index++;
 			resetQuestion();
+			void focusAfterUpdate(() => answerInput);
 		}
 	}
 </script>
@@ -200,6 +217,7 @@
 					>
 						<input
 							id="answer"
+							bind:this={answerInput}
 							bind:value={answer}
 							placeholder="二字熟語"
 							autocomplete="off"
@@ -211,6 +229,7 @@
 						{#if feedback === 'correct' || feedback === 'failed'}<button
 								class="primary"
 								type="button"
+								bind:this={nextButton}
 								onclick={next}>{index + 1 === quizzes.length ? '結果を見る' : '次の問題'} →</button
 							>{:else}<button
 								class="primary"
@@ -239,7 +258,7 @@
 		{:else}
 			<section class="result panel">
 				<div class="eyebrow"><span class="dot"></span> ROUND COMPLETE</div>
-				<h1>おつかれさま！</h1>
+				<h1 tabindex="-1" bind:this={resultHeading}>おつかれさま！</h1>
 				<p class="lead">今回の結果</p>
 				<div class="score"><strong>{score}</strong><span> / {quizzes.length} 問正解</span></div>
 				<ol class="results">
