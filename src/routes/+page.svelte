@@ -236,6 +236,7 @@
 </main>
 
 <footer inert={startup || status === 'end'}>
+	<p>漢字の形を調べる：<a href="https://ids.mkpo.li/">IDS Workshop</a></p>
 	<p>
 		このゲームは、YouTubeチャンネル <a href="https://www.youtube.com/c/QuizKnock">QuizKnock</a>
 		の動画「<a href="https://www.youtube.com/watch?v=vuV5EUoQnzo"
