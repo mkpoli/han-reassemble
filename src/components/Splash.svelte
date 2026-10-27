@@ -2,6 +2,7 @@
 	import screenshot from '#assets/screenshot.png';
 
 	import Settings from './Settings.svelte';
+	import type { Difficulty } from '../lib/quiz';
 
 	import { config } from '../lib/states.svelte';
 
@@ -11,11 +12,12 @@
 	const dispatch = createEventDispatcher<{
 		newgame: {
 			groupSize: number;
+			difficulty: Difficulty;
 			maxRetry: number;
 		};
 	}>();
 
-	let { groupSize, maxRetry } = config.config;
+	let { groupSize, maxRetry, difficulty } = config.config;
 </script>
 
 <div class="dialog">
@@ -25,14 +27,14 @@
 
 	<img src={screenshot} alt="重・委・拉を組み換えて接種にする例" />
 
-	<Settings bind:groupSize bind:maxRetry />
+	<Settings bind:groupSize bind:maxRetry bind:difficulty />
 
 	{#if error}<p class="load-error" role="alert">{error}</p>{/if}
 	<button
 		disabled={loading}
 		class="primary"
 		on:click={() => {
-			dispatch('newgame', { groupSize, maxRetry });
+			dispatch('newgame', { groupSize, maxRetry, difficulty });
 		}}>スタート！</button
 	>
 </div>

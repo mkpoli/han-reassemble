@@ -6,14 +6,17 @@
 	export let loading = false;
 	export let error = '';
 	import Settings from './Settings.svelte';
+	import type { Difficulty } from '../lib/quiz';
 	const dispatch = createEventDispatcher<{
 		newgame: {
 			groupSize: number;
+			difficulty: Difficulty;
 			maxRetry: number;
 		};
 	}>();
 
 	export let maxRetry: number;
+	export let difficulty: Difficulty;
 	export let lastGroupSize: number;
 	export let quizzes: Quiz[];
 	export let failed: number[];
@@ -39,13 +42,13 @@
 		</ol>
 	{/if}
 
-	<Settings bind:groupSize bind:maxRetry />
+	<Settings bind:groupSize bind:maxRetry bind:difficulty />
 
 	{#if error}<p class="load-error" role="alert">{error}</p>{/if}
 	<button
 		disabled={loading}
 		on:click={() => {
-			dispatch('newgame', { groupSize, maxRetry });
+			dispatch('newgame', { groupSize, maxRetry, difficulty });
 		}}>Next Game</button
 	>
 </div>
