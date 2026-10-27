@@ -242,7 +242,6 @@
 			>【大失敗】漢字のパーツが組み変わってしまいました</a
 		>」から着想を得て作られた物です。
 	</p>
-	<p>漢字の構成は<a href="https://ids.mkpo.li/">IDS Workshop</a>でも調べられます。</p>
 	<p>使用されたデータは、以下です。</p>
 	<ul>
 		<li>
@@ -267,7 +266,10 @@
 			>）
 		</li>
 	</ul>
-	<p style="text-align:center;">制作者 <a href="https://twitter.com/mkpoli">@mkpoli</a></p>
+	<p style="text-align:center;">
+		制作者 <a href="https://twitter.com/mkpoli">@mkpoli</a> ・ 漢字構成ツール
+		<a href="https://ids.mkpo.li/">IDS Workshop</a>
+	</p>
 </footer>
 
 <style>
