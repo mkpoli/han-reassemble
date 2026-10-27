@@ -1,9 +1,9 @@
 <script lang="ts">
-	import screenshot from '$assets/screenshot.png';
+	import screenshot from '#assets/screenshot.png';
 
 	import Settings from './Settings.svelte';
 
-	import { config } from '$lib/states.svelte';
+	import { config } from '../lib/states.svelte';
 
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher<{
