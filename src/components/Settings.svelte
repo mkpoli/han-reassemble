@@ -60,9 +60,10 @@
 		box-sizing: border-box;
 		width: 5em;
 		padding: 0.4em 0.5em;
-		border: 1px solid var(--control-border);
-		border-radius: 0.3em;
-		background: var(--control-surface);
+		border: 1px solid var(--input-border);
+		border-radius: 0.2em;
+		background: white;
+		box-shadow: inset 0 1px 2px rgb(32 24 36 / 0.08);
 		color: var(--control-text);
 		font: inherit;
 		text-align: center;
@@ -81,6 +82,7 @@
 		flex: 1;
 		min-width: 0;
 		padding: 0.45em 0.15em;
+		border-radius: 999px;
 		font-size: 0.7em;
 		white-space: nowrap;
 	}

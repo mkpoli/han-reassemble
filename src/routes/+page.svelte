@@ -331,12 +331,13 @@
 		font-size: 2em;
 		text-align: center;
 
-		border: 1px solid var(--control-border);
-		border-radius: 0.15em;
+		border: 1px solid var(--input-border);
+		border-radius: 0.1em;
+		box-shadow: inset 0 1px 2px rgb(32 24 36 / 0.08);
 	}
 
 	input[type='text'] {
-		background: var(--control-surface);
+		background: white;
 	}
 
 	input.wrong {
