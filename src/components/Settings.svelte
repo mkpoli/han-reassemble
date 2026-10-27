@@ -65,6 +65,16 @@
 		background: white;
 		color: inherit;
 	}
+	@media (max-width: 480px) {
+		.difficulty {
+			flex-direction: column;
+			gap: 0.2em;
+		}
+		.difficulty select {
+			width: 100%;
+			font-size: 0.85em;
+		}
+	}
 	.settings .form {
 		display: grid;
 		grid-template-columns: auto auto;
