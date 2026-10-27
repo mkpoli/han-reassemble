@@ -6,6 +6,8 @@
 	import { config } from '../lib/states.svelte';
 
 	import { createEventDispatcher } from 'svelte';
+	export let loading = false;
+	export let error = '';
 	const dispatch = createEventDispatcher<{
 		newgame: {
 			groupSize: number;
@@ -25,7 +27,9 @@
 
 	<Settings bind:groupSize bind:maxRetry />
 
+	{#if error}<p class="load-error" role="alert">{error}</p>{/if}
 	<button
+		disabled={loading}
 		class="primary"
 		on:click={() => {
 			dispatch('newgame', { groupSize, maxRetry });
@@ -34,6 +38,14 @@
 </div>
 
 <style>
+	.load-error {
+		max-width: 18em;
+		margin: 0 auto;
+		color: var(--color-error);
+		font-size: 0.75em;
+		line-height: 1.4;
+		overflow-wrap: anywhere;
+	}
 	h2 {
 		font-size: 1.6rem;
 		margin: 0;
@@ -66,5 +78,20 @@
 	img {
 		width: min(220px, 70%);
 		height: auto;
+	}
+	@media (max-height: 650px) {
+		.dialog {
+			padding: 0.65em;
+			gap: 0.3em;
+		}
+		h2 {
+			font-size: 1.2rem;
+		}
+		img {
+			width: min(125px, 60%);
+		}
+		.description {
+			font-size: 0.8em;
+		}
 	}
 </style>
