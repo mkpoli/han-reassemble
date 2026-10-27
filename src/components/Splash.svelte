@@ -29,10 +29,19 @@
 
 	<details class="tutorial">
 		<summary>はじめての方へ</summary>
+		<ol>
+			<li>
+				難易度を選び、問題数と再試行の回数を決めて「スタート！」を押します。難易度は、表示されるパーツの数で分かれています。
+			</li>
+			<li>出題された漢字を部品に分けて組み直し、二字熟語を作ります。</li>
+			<li>答えを入力して「答える」を押します。迷ったときは「ヒント」で文字数を確認できます。</li>
+			<li>
+				間違えたときは、設定した回数だけ答え直せます。全問終わると、結果と答えが表示されます。
+			</li>
+		</ol>
 		<p>
-			漢字を部品に分けて組み直し、二字熟語を作ります。たとえば「重・委・拉」からは「接種」ができます。
+			例：「委」を「禾」と「女」に分け、「女」と「拉」で「接」、「禾」と「重」で「種」を作ると「接種」になります。
 		</p>
-		<p>答えを入力して「答える」を押します。迷ったときは「ヒント」で文字数を確認できます。</p>
 	</details>
 
 	<Settings bind:groupSize bind:maxRetry bind:difficulty />
@@ -100,6 +109,13 @@
 	.tutorial summary:focus-visible {
 		outline: 2px solid #80638e;
 		outline-offset: 2px;
+	}
+	.tutorial ol {
+		margin: 0.5em 0 0;
+		padding-left: 1.5em;
+	}
+	.tutorial li + li {
+		margin-top: 0.35em;
 	}
 	.tutorial p {
 		margin: 0.5em 0 0;
