@@ -9,19 +9,21 @@ export function equals(answer: string, lemma: string): boolean {
 	);
 }
 
-export function candidates(items: Item[], difficulty: Difficulty): Quiz[] {
+export function candidates(items: Item[], difficulty: Difficulty | 'all'): Quiz[] {
 	return items
-		.filter(({ lemma }) => [...lemma].length === 2)
+		.filter(({ lemma }) => difficulty === 'all' || [...lemma].length === 2)
 		.flatMap(({ lemma, anagrams }) => {
 			const options = [...anagrams.matchAll(/'([^']+)'/g)].map((match) => match[1]);
 			return options
 				.filter((anagram) => {
 					const length = [...anagram].length;
-					return difficulty === 'easy'
-						? length <= 2
-						: difficulty === 'normal'
-							? length >= 3 && length <= 4
-							: length >= 5;
+					return difficulty === 'all'
+						? true
+						: difficulty === 'easy'
+							? length <= 2
+							: difficulty === 'normal'
+								? length >= 3 && length <= 4
+								: length >= 5;
 				})
 				.map((anagram) => ({ lemma, anagram }));
 		});

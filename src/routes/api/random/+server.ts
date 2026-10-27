@@ -5,15 +5,20 @@ import _ from 'lodash';
 import type { RequestHandler } from './$types';
 
 const pools = Object.fromEntries(
-	(['easy', 'normal', 'hard'] as const).map((difficulty) => [
+	(['all', 'easy', 'normal', 'hard'] as const).map((difficulty) => [
 		difficulty,
 		candidates(data as Item[], difficulty)
 	])
-) as Record<Difficulty, ReturnType<typeof candidates>>;
+) as Record<Difficulty | 'all', ReturnType<typeof candidates>>;
 
 export const GET: RequestHandler = ({ url }) => {
-	const requested = url.searchParams.get('difficulty') ?? 'normal';
-	if (requested !== 'easy' && requested !== 'normal' && requested !== 'hard') {
+	const requested = url.searchParams.get('difficulty') ?? 'all';
+	if (
+		requested !== 'all' &&
+		requested !== 'easy' &&
+		requested !== 'normal' &&
+		requested !== 'hard'
+	) {
 		return json({ error: 'Invalid difficulty' }, { status: 400 });
 	}
 	const rawAmount = url.searchParams.get('amount') ?? '10';

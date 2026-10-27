@@ -47,6 +47,7 @@
 	async function newGroup(cfg: Config) {
 		init();
 
+		cfg = { ...cfg, groupSize: Math.min(50, Math.max(1, Math.trunc(Number(cfg.groupSize) || 10))) };
 		config.config = cfg;
 
 		failed = [];
