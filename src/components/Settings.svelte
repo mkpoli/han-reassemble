@@ -10,11 +10,18 @@
 	<label class="difficulty"
 		>難易度
 		<select bind:value={difficulty}>
-			<option value="easy">やさしい（パーツ1〜2個）</option>
-			<option value="normal">ふつう（パーツ3〜4個）</option>
-			<option value="hard">むずかしい（パーツ5個以上）</option>
+			<option value="easy">やさしい</option>
+			<option value="normal">ふつう</option>
+			<option value="hard">むずかしい</option>
 		</select>
 	</label>
+	<small class="difficulty-detail"
+		>{difficulty === 'easy'
+			? 'パーツ1〜2個'
+			: difficulty === 'normal'
+				? 'パーツ3〜4個'
+				: 'パーツ5個以上'}</small
+	>
 	<div class="form">
 		<label for="group-size">問題数</label>
 		<input type="number" min={1} max={50} bind:value={groupSize} id="group-size" />
@@ -64,6 +71,11 @@
 		border-radius: 0.25em;
 		background: white;
 		color: inherit;
+	}
+	.difficulty-detail {
+		display: block;
+		font-size: 0.65em;
+		color: #666;
 	}
 	@media (max-width: 480px) {
 		.difficulty {
