@@ -236,13 +236,13 @@
 </main>
 
 <footer inert={startup || status === 'end'}>
-	<p>漢字の形を調べる：<a href="https://ids.mkpo.li/">IDS Workshop</a></p>
 	<p>
 		このゲームは、YouTubeチャンネル <a href="https://www.youtube.com/c/QuizKnock">QuizKnock</a>
 		の動画「<a href="https://www.youtube.com/watch?v=vuV5EUoQnzo"
 			>【大失敗】漢字のパーツが組み変わってしまいました</a
 		>」から着想を得て作られた物です。
 	</p>
+	<p>漢字の構成は<a href="https://ids.mkpo.li/">IDS Workshop</a>でも調べられます。</p>
 	<p>使用されたデータは、以下です。</p>
 	<ul>
 		<li>
