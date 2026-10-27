@@ -1,5 +1,5 @@
 <script lang="ts">
-	import screenshot from '#assets/screenshot.png';
+	import ExampleGallery from './ExampleGallery.svelte';
 
 	import Settings from './Settings.svelte';
 	import type { Difficulty } from '../lib/quiz';
@@ -18,6 +18,7 @@
 	}>();
 
 	let { groupSize, maxRetry, difficulty } = config.config;
+	let galleryPlaying = false;
 </script>
 
 <div class="dialog">
@@ -25,9 +26,14 @@
 
 	<div class="description"><span>漢字を組み換えて、</span><span>熟語を作ろう！</span></div>
 
-	<img src={screenshot} alt="重・委・拉を組み換えて接種にする例" />
+	<ExampleGallery bind:playing={galleryPlaying} />
 
-	<details class="tutorial">
+	<details
+		class="tutorial"
+		on:toggle={(event) => {
+			if (event.currentTarget.open) galleryPlaying = false;
+		}}
+	>
 		<summary>はじめての方へ</summary>
 		<ol>
 			<li>
@@ -40,7 +46,7 @@
 			</li>
 		</ol>
 		<p>
-			例：「委」を「禾」と「女」に分け、「女」と「拉」で「接」、「禾」と「重」で「種」を作ると「接種」になります。
+			例：「重・委・拉」の「委」を「禾」と「女」に分け、「女」と「拉」で「接」、「禾」と「重」で「種」を作ると「接種」になります。
 		</p>
 	</details>
 
@@ -120,10 +126,6 @@
 	.tutorial p {
 		margin: 0.5em 0 0;
 	}
-	img {
-		width: min(220px, 70%);
-		height: auto;
-	}
 	@media (max-height: 650px) {
 		.dialog {
 			padding: 0.65em;
@@ -131,9 +133,6 @@
 		}
 		h2 {
 			font-size: 1.2rem;
-		}
-		img {
-			width: min(125px, 60%);
 		}
 		.description {
 			font-size: 0.8em;
