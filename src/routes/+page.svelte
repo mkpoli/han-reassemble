@@ -321,11 +321,12 @@
 		font-size: 2em;
 		text-align: center;
 
-		border: 1px solid #ccc;
+		border: 1px solid var(--control-border);
+		border-radius: 0.15em;
 	}
 
 	input[type='text'] {
-		background: transparent;
+		background: var(--control-surface);
 	}
 
 	input.wrong {
