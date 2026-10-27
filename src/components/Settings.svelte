@@ -7,14 +7,29 @@
 
 <fieldset class="settings">
 	<legend>設定</legend>
-	<label class="difficulty"
-		>難易度
-		<select bind:value={difficulty}>
-			<option value="easy">やさしい</option>
-			<option value="normal">ふつう</option>
-			<option value="hard">むずかしい</option>
-		</select>
-	</label>
+	<div class="difficulty" role="group" aria-label="難易度">
+		<span class="difficulty-label">難易度</span>
+		<div class="difficulty-buttons">
+			<button
+				type="button"
+				class:selected={difficulty === 'easy'}
+				aria-pressed={difficulty === 'easy'}
+				on:click={() => (difficulty = 'easy')}>やさしい</button
+			>
+			<button
+				type="button"
+				class:selected={difficulty === 'normal'}
+				aria-pressed={difficulty === 'normal'}
+				on:click={() => (difficulty = 'normal')}>ふつう</button
+			>
+			<button
+				type="button"
+				class:selected={difficulty === 'hard'}
+				aria-pressed={difficulty === 'hard'}
+				on:click={() => (difficulty = 'hard')}>むずかしい</button
+			>
+		</div>
+	</div>
 	<small class="difficulty-detail"
 		>{difficulty === 'easy'
 			? 'パーツ1〜2個'
@@ -53,35 +68,44 @@
 		text-align: center;
 	}
 
-	.difficulty {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		gap: 0.5em;
+	.difficulty-label {
+		display: block;
+		margin-bottom: 0.3em;
 	}
-	.difficulty select {
+	.difficulty-buttons {
+		display: flex;
+		justify-content: center;
+		gap: 0.3em;
+	}
+	.difficulty-buttons button {
+		flex: 1;
 		min-width: 0;
-		max-width: 100%;
-		padding: 0.4em;
-		border: 1px solid #ccc;
-		border-radius: 0.25em;
-		background: white;
-		color: inherit;
+		padding: 0.45em 0.15em;
+		border: 1px solid #d2c9da;
+		border-radius: 0.3em;
+		background: #faf8fb;
+		color: #46384e;
+		font-size: 0.7em;
+		white-space: nowrap;
+	}
+	.difficulty-buttons button:hover {
+		border-color: #80638e;
+		background: #f2ebf6;
+	}
+	.difficulty-buttons button.selected {
+		border-color: #563973;
+		background: #563973;
+		color: white;
+	}
+	.difficulty-buttons button:focus-visible {
+		outline: 2px solid #80638e;
+		outline-offset: 2px;
 	}
 	.difficulty-detail {
 		display: block;
+		margin-top: 0.25em;
 		font-size: 0.65em;
 		color: #666;
-	}
-	@media (max-width: 480px) {
-		.difficulty {
-			flex-direction: column;
-			gap: 0.2em;
-		}
-		.difficulty select {
-			width: 100%;
-			font-size: 0.85em;
-		}
 	}
 	.settings .form {
 		display: grid;
@@ -97,12 +121,11 @@
 		text-align: center;
 	}
 	@media (max-height: 650px) {
-		.difficulty {
-			flex-direction: row;
-			gap: 0.35em;
+		.difficulty-label {
+			margin-bottom: 0.15em;
 		}
-		.difficulty select {
-			width: auto;
+		.difficulty-buttons button {
+			padding: 0.3em 0.1em;
 		}
 		.settings .form {
 			padding: 0.1em;
