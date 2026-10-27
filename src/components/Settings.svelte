@@ -82,7 +82,6 @@
 		flex: 1;
 		min-width: 0;
 		padding: 0.45em 0.15em;
-		border-radius: 999px;
 		font-size: 0.7em;
 		white-space: nowrap;
 	}
