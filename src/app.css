@@ -3,6 +3,9 @@
 	--color-accent-light: rgb(166, 123, 143);
 	--color-link: #542ecf;
 	--color-error: rgb(255, 26, 26);
+	--control-border: #d2c9da;
+	--control-surface: #faf8fb;
+	--control-text: #46384e;
 
 	accent-color: var(--color-accent);
 
@@ -12,21 +15,38 @@
 button {
 	padding: 0.5em 1em;
 	font-size: 1.2em;
-	border: none;
-	border-radius: 0.25em;
+	border: 1px solid var(--control-border);
+	border-radius: 0.3em;
+	background: var(--control-surface);
+	color: var(--control-text);
+	cursor: pointer;
 }
 
-button:hover {
-	background-color: rgb(166, 123, 143, 0.1);
+button:hover:not(:disabled) {
+	border-color: #80638e;
+	background: #f2ebf6;
 }
 
 button.primary {
-	background-color: var(--color-accent);
+	border-color: var(--color-accent);
+	background: var(--color-accent);
 	color: white;
 }
 
-button.primary:hover {
-	opacity: 0.8;
+button.primary:hover:not(:disabled) {
+	border-color: #6c4d83;
+	background: #6c4d83;
+}
+
+button:disabled {
+	cursor: default;
+	opacity: 0.65;
+}
+
+button:focus-visible,
+input:focus-visible {
+	outline: 2px solid #80638e;
+	outline-offset: 2px;
 }
 
 a {

@@ -15,29 +15,25 @@
 
 <style>
 	.settings {
-		border-radius: 0.25em;
-		border: none;
-		box-shadow: 1px 1px 0.2em rgba(0, 0, 0, 0.25);
+		border: 1px solid var(--control-border);
+		border-radius: 0.3em;
 	}
 
 	.settings legend {
-		border-radius: 0.25em;
-		background-color: white;
-		box-shadow: 1px 1px 0.2em rgba(0, 0, 0, 0.25);
-		padding: 0.25em 0.5em;
-		margin: 0 0.5em;
+		padding: 0 0.4em;
+		color: var(--control-text);
 	}
 
 	.settings input {
-		border-radius: 0.25em;
-		border: none;
-		padding: 1em;
+		box-sizing: border-box;
 		width: 5em;
-		background-color: white;
-		box-shadow: 1px 1px 0.5em rgba(0, 0, 0, 0.25);
-		padding: 0.5em 0.5em;
+		padding: 0.4em 0.5em;
+		border: 1px solid var(--control-border);
+		border-radius: 0.3em;
+		background: var(--control-surface);
+		color: var(--control-text);
+		font: inherit;
 		text-align: center;
-		appearance: none;
 	}
 
 	.settings .form {
