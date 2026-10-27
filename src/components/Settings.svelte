@@ -96,4 +96,20 @@
 
 		text-align: center;
 	}
+	@media (max-height: 650px) {
+		.difficulty {
+			flex-direction: row;
+			gap: 0.35em;
+		}
+		.difficulty select {
+			width: auto;
+		}
+		.settings .form {
+			padding: 0.1em;
+			gap: 0.2em;
+		}
+		.settings legend {
+			padding: 0.1em 0.4em;
+		}
+	}
 </style>
