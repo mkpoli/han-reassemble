@@ -1,57 +1,69 @@
 <script lang="ts">
-	import { createBubbler } from 'svelte/legacy';
-
-	const bubble = createBubbler();
 	interface Props {
 		enabled?: boolean;
+		label: string;
 		children?: import('svelte').Snippet;
 	}
 
-	let { enabled, children }: Props = $props();
+	let { enabled, label, children }: Props = $props();
+
+	function focusDialog(node: HTMLElement) {
+		const previous = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+		node.focus();
+		return {
+			destroy() {
+				queueMicrotask(() => {
+					if (document.activeElement && document.activeElement !== document.body) return;
+					if (
+						previous &&
+						previous !== document.body &&
+						previous.isConnected &&
+						!previous.closest('[inert]')
+					) {
+						previous.focus();
+					} else {
+						document.querySelector<HTMLElement>('main input:not([disabled])')?.focus();
+					}
+				});
+			}
+		};
+	}
 </script>
 
-<!-- <svelte:body> 
-  <div>
-  <slot /> -->
-
-<!-- </svelte:body> -->
-
-<div class="overlay" class:hidden={!enabled}>
-	<div class="foreground">
-		{@render children?.()}
+{#if enabled}
+	<div class="overlay" role="presentation">
+		<div
+			class="foreground"
+			role="dialog"
+			aria-modal="true"
+			aria-label={label}
+			tabindex="-1"
+			use:focusDialog
+		>
+			{@render children?.()}
+		</div>
 	</div>
-	<div class="background" onclick={bubble('click')}></div>
-</div>
+{/if}
 
 <style>
 	.overlay {
 		position: fixed;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		background-color: rgba(0, 0, 0, 0.5);
-		backdrop-filter: blur(5px);
+		inset: 0;
 		z-index: 100;
-
-		display: flex;
-		align-items: center;
-		justify-content: center;
+		display: grid;
+		place-items: center;
+		padding: 16px;
+		background: rgba(0, 0, 0, 0.5);
+		backdrop-filter: blur(5px);
 	}
-
-	.hidden {
-		display: none;
-	}
-
 	.foreground {
-		z-index: 101;
+		border-radius: 0.8em;
+		max-width: 100%;
+		max-height: calc(100dvh - 32px);
+		overflow-y: auto;
 	}
-
-	.background {
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
+	.foreground:focus-visible {
+		outline: 2px solid #a787bb;
+		outline-offset: 2px;
 	}
 </style>

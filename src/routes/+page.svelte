@@ -4,12 +4,16 @@
 	import Prompt from '#components/Prompt.svelte';
 	import Splash from '#components/Splash.svelte';
 
-	import { onMount } from 'svelte';
+	import { onMount, tick } from 'svelte';
 	import { equals, type Quiz } from '../lib/quiz';
-	import { overlay, config, type Config } from '../lib/states.svelte';
+	import { config, type Config } from '../lib/states.svelte';
 
 	let status: 'correct' | 'wrong' | 'failed' | 'end' | null = $state(null);
 	let userInput = $state('');
+	let loading = $state(false);
+	let loadError = $state('');
+	let answerInput = $state<HTMLInputElement>();
+	let previewController: AbortController | undefined;
 	let failed: number[] = $state([]);
 	let retry: number = $state(0);
 	let index = $state(0);
@@ -43,21 +47,58 @@
 		showHint = false;
 	}
 
-	onMount(() => newGroup(config.config));
+	onMount(() => {
+		const controller = new AbortController();
+		previewController = controller;
+		void (async () => {
+			try {
+				const res = await fetch(`/api/random?amount=${config.config.groupSize}`, {
+					signal: controller.signal
+				});
+				if (!res.ok) return;
+				const preview: Quiz[] = await res.json();
+				if (
+					!controller.signal.aborted &&
+					startup &&
+					!loading &&
+					Array.isArray(preview) &&
+					preview.length > 0
+				) {
+					quizzes = preview;
+				}
+			} catch {
+				// Starting a round retries the request if the background preview fails.
+			}
+		})();
+		return () => controller.abort();
+	});
+
 	async function newGroup(cfg: Config) {
-		init();
-
-		cfg = { ...cfg, groupSize: Math.min(50, Math.max(1, Math.trunc(Number(cfg.groupSize) || 10))) };
-		config.config = cfg;
-
-		failed = [];
-
+		if (loading) return;
+		loading = true;
+		previewController?.abort();
+		loadError = '';
+		const nextConfig = {
+			groupSize: Math.min(50, Math.max(1, Math.trunc(Number(cfg.groupSize) || 10))),
+			maxRetry: Math.min(5, Math.max(0, Math.trunc(Number(cfg.maxRetry) || 0)))
+		};
 		try {
-			const res = await fetch(`/api/random?amount=${cfg.groupSize}`);
-			quizzes = await res.json();
+			const res = await fetch(`/api/random?amount=${nextConfig.groupSize}`);
+			if (!res.ok) throw new Error('Request failed');
+			const next: Quiz[] = await res.json();
+			if (!Array.isArray(next) || next.length === 0) throw new Error('No puzzles');
+			config.config = nextConfig;
+			quizzes = next;
+			failed = [];
 			index = 0;
-		} catch (e) {
-			console.error(e);
+			init();
+			startup = false;
+			await tick();
+			answerInput?.focus();
+		} catch {
+			loadError = '問題を読み込めませんでした。';
+		} finally {
+			loading = false;
 		}
 	}
 
@@ -100,28 +141,31 @@
 
 <h1>漢字組直しクイズ</h1>
 
-<Overlay enabled={status === 'end'}>
+<Overlay enabled={status === 'end'} label="結果">
 	<GameOver
 		lastGroupSize={groupSize}
 		{maxRetry}
 		{quizzes}
 		{failed}
+		{loading}
+		error={loadError}
 		on:newgame={({ detail }) => {
 			newGroup(detail);
 		}}
 	/>
 </Overlay>
 
-<Overlay enabled={startup}>
+<Overlay enabled={startup} label="ゲーム説明">
 	<Splash
+		{loading}
+		error={loadError}
 		on:newgame={({ detail }) => {
 			newGroup(detail);
-			startup = false;
 		}}
 	/>
 </Overlay>
 
-<main inert={overlay ? true : undefined}>
+<main inert={startup || status === 'end'}>
 	{#if currentQuiz}
 		<div class="anagram">
 			{#if status === 'correct'}
@@ -137,6 +181,7 @@
 		<input
 			type="text"
 			class:wrong={status === 'wrong'}
+			bind:this={answerInput}
 			bind:value={userInput}
 			onkeyup={(event) => {
 				if (event.key === 'Enter') {
@@ -166,7 +211,7 @@
 	</section>
 </main>
 
-<footer inert={overlay ? true : undefined}>
+<footer inert={startup || status === 'end'}>
 	<p>
 		このゲームは、YouTubeチャンネル <a href="https://www.youtube.com/c/QuizKnock">QuizKnock</a>
 		の動画「<a href="https://www.youtube.com/watch?v=vuV5EUoQnzo"
@@ -223,7 +268,7 @@
 	}
 
 	main {
-		padding: 2em;
+		padding: clamp(1em, 4vw, 2em);
 		background-color: #ffffff;
 
 		display: flex;
@@ -242,11 +287,11 @@
 
 	h1 {
 		text-align: center;
-		margin: 1em 1em;
+		margin: 1em 0.5em;
 		font-weight: normal;
 		padding: 0;
 		line-height: 1.3;
-		font-size: 3em;
+		font-size: clamp(1.7em, 6vw, 3em);
 		overflow: visible;
 		margin-bottom: 0;
 	}
