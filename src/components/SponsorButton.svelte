@@ -4,23 +4,23 @@
 	const text = {
 		label: 'スポンサー',
 		close: '閉じる',
-		lead: '漢字が好きでこのゲームを作っていて、これまでに自腹で数百ドルをつぎ込んできました。今は仕事がなく、わずかなTAの給料では家賃や食費すらまかなえません。日によっては、ご飯を食べるのさえやっとのこともあります。',
-		ask: '開発を続けられるよう、どうか力を貸してください🥺 たった1\u2060ドルでも、今日の私のごはん代として本当に助かります。',
-		howTo: '応援の方法',
+		lead: '漢字組直しクイズは個人で開発・運営しており、外部からの資金援助はありません。誰でも無料で使えて、これからもずっと無料で続けたいと思っています。',
+		ask: 'もし漢字組直しクイズがお役に立っていたら、Ko-fiでチップをいただけると、継続して改善していく時間を作ることができます。',
+		howTo: 'チップの送り方',
 		steps: [
-			'下のKo-fiをタップしてください。',
-			'お好きな金額を選んでください。少額でもすごく嬉しいです。',
-			'PayPalまたはカードでお支払いいただけます。会員登録は不要です。'
+			'下のKo-fiをタップ。',
+			'お好きな金額と、1回または毎月を選択。',
+			'PayPalまたはカードでお支払い。アカウント登録は不要です。'
 		],
-		kofi: '1回だけでも、毎月でも',
+		kofi: '1回または毎月',
 		company: '企業スポンサー',
-		companyHint: 'このサイトへの広告掲載も大歓迎です。mkpoli@mkpo.liまでぜひご連絡ください。',
-		thanks:
-			'最後まで読んでくださり本当にありがとうございます。みなさんの温かい応援が私のごはんになり、このゲームをもっと育てていく力になります💗'
+		companyHint:
+			'企業スポンサーも歓迎しています。当サイトに広告を掲載できますので、mkpoli@mkpo.liまでお気軽にご連絡ください。',
+		thanks: '漢字組直しクイズをご利用いただきありがとうございます💗'
 	};
 
 	// The Sponsor pill, led by the author's face, and the dialog it opens: her portrait,
-	// why she needs help, then three steps that end at the Ko-fi button.
+	// what a tip pays for, then three steps that end at the Ko-fi button.
 	let open = $state(false);
 	let dialog = $state<HTMLDialogElement>();
 
