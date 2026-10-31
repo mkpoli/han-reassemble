@@ -3,6 +3,7 @@
 	import Overlay from '#components/Overlay.svelte';
 	import Prompt from '#components/Prompt.svelte';
 	import Splash from '#components/Splash.svelte';
+	import SponsorButton from '#components/SponsorButton.svelte';
 
 	import { onDestroy, onMount, tick } from 'svelte';
 	import { equals, type Quiz } from '../lib/quiz';
@@ -188,6 +189,10 @@
 	<meta name="twitter:card" content="summary_large_image" />
 </svelte:head>
 
+<header class="topbar" inert={startup || status === 'end'}>
+	<SponsorButton />
+</header>
+
 <h1>漢字組直しクイズ</h1>
 
 <Overlay enabled={status === 'end'} label="結果">
@@ -349,9 +354,17 @@
 		width: 100%;
 	}
 
+	.topbar {
+		display: flex;
+		justify-content: flex-end;
+		max-width: 1024px;
+		margin: 0 auto;
+		padding: 10px 12px 0;
+	}
+
 	h1 {
 		text-align: center;
-		margin: 1em 0.5em;
+		margin: 0.6em 0.5em 1em;
 		font-weight: normal;
 		padding: 0;
 		line-height: 1.3;
