@@ -14,6 +14,8 @@
 		],
 		kofi: '1回のみ、または毎月',
 		ofuse: 'メッセージ付きチップ',
+		supporters: '最近の支援者',
+		anonymous: '匿名希望',
 		company: '企業スポンサー',
 		companyHint: '企業スポンサーも歓迎しています。mkpoli@mkpo.liまでお気軽にご連絡ください。',
 		thanks: '漢字組直しクイズをご利用いただきありがとうございます💗'
@@ -26,6 +28,18 @@
 
 	$effect(() => {
 		if (open && dialog && !dialog.open) dialog.showModal();
+	});
+
+	// The supporters roll's script loads when the dialog first opens, so a page view
+	// does not reach the supporters service.
+	let rollLoaded = false;
+	$effect(() => {
+		if (!open || rollLoaded) return;
+		rollLoaded = true;
+		const script = document.createElement('script');
+		script.type = 'module';
+		script.src = 'https://supporters.mkpo.li/roll.js';
+		document.head.append(script);
 	});
 
 	// The dialog lives under <body>, away from the header's stacking and wrapping.
@@ -117,6 +131,7 @@
 				<iconify-icon icon="mdi:email-outline" aria-hidden="true"></iconify-icon>
 				<span class="copy"><strong>{text.company}</strong><small>{text.companyHint}</small></span>
 			</a>
+			<supporters-roll label={text.supporters} anonymous={text.anonymous}></supporters-roll>
 			<p class="thanks">{text.thanks}</p>
 		</div>
 	</dialog>
