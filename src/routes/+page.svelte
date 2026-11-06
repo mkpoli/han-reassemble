@@ -311,6 +311,7 @@
 	<p style="text-align:center;">
 		制作者 <a href="https://twitter.com/mkpoli">@mkpoli</a> ・ 漢字構成ツール
 		<a href="https://ids.mkpo.li/">IDS Workshop</a>
+		・ <a href="https://scripts.mkpo.li/ja/">他の文字プロジェクト</a>
 	</p>
 </footer>
 
