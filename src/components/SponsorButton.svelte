@@ -5,21 +5,22 @@
 		label: 'スポンサー',
 		close: '閉じる',
 		lead: '漢字組直しクイズは個人で開発・運営しており、外部からの資金援助はありません。誰でも無料で使えて、これからもずっと無料で続けたいと思っています。',
-		ask: 'もし漢字組直しクイズがお役に立っていたら、Ko-fiでチップをいただけると、継続して改善していく時間を作ることができます。',
+		ask: 'もし漢字組直しクイズがお役に立っていたら、チップをいただけると、継続して改善していく時間を作ることができます。',
 		howTo: 'チップの送り方',
 		steps: [
-			'下のKo-fiをタップ。',
-			'お好きな金額を選択。',
-			'PayPalまたはカードでお支払い。アカウント登録は不要です。'
+			'下のどちらかのボタンを押します。',
+			'金額を選びます。',
+			'カードで支払います。登録は不要です。'
 		],
-		kofi: '1回または毎月',
+		kofi: '1回のみ、または毎月',
+		ofuse: 'メッセージ付きチップ',
 		company: '企業スポンサー',
 		companyHint: '企業スポンサーも歓迎しています。mkpoli@mkpo.liまでお気軽にご連絡ください。',
 		thanks: '漢字組直しクイズをご利用いただきありがとうございます💗'
 	};
 
 	// The Sponsor pill, led by the author's face, and the dialog it opens: her portrait,
-	// what a tip pays for, then three steps that end at the Ko-fi button.
+	// what a tip pays for, then three steps that end at the OFUSE and Ko-fi buttons.
 	let open = $state(false);
 	let dialog = $state<HTMLDialogElement>();
 
@@ -102,6 +103,11 @@
 					{#each text.steps as step (step)}<li>{step}</li>{/each}
 				</ol>
 			</section>
+			<a class="ofuse" href="https://ofuse.me/mkpoli" target="_blank" rel="noreferrer noopener">
+				<img class="mark" src="/brand/ofuse-icon.svg" alt="" width="26" height="28" />
+				<span class="copy"><strong>OFUSE</strong><small>{text.ofuse}</small></span>
+				<iconify-icon class="arrow" icon="mdi:arrow-right" aria-hidden="true"></iconify-icon>
+			</a>
 			<a class="kofi" href="https://ko-fi.com/mkpoli" target="_blank" rel="noreferrer noopener">
 				<img class="mark" src="/brand/kofi-symbol.svg" alt="" width="34" height="27" />
 				<span class="copy"><strong>Ko-fi</strong><small>{text.kofi}</small></span>
@@ -161,6 +167,7 @@
 	.sponsor:focus-visible,
 	.dismiss:focus-visible,
 	.kofi:focus-visible,
+	.ofuse:focus-visible,
 	.company:focus-visible {
 		outline: 2px solid #80638e;
 		outline-offset: 2px;
@@ -404,22 +411,35 @@
 
 	.kofi,
 	.kofi:visited,
-	.kofi:hover {
+	.kofi:hover,
+	.ofuse,
+	.ofuse:visited,
+	.ofuse:hover {
 		color: #fff;
 	}
 
-	.kofi {
+	.kofi,
+	.ofuse {
 		display: flex;
 		align-items: center;
 		gap: 12px;
 		padding-block: 12px;
 		padding-inline: 12px 18px;
 		border-radius: 999px;
-		background: #202020;
-		border: 1px solid light-dark(#202020, rgb(255 255 255 / 0.2));
 		color: #fff;
 		text-decoration: none;
+	}
+
+	.kofi {
+		background: #202020;
+		border: 1px solid light-dark(#202020, rgb(255 255 255 / 0.2));
 		box-shadow: 0 6px 16px rgb(32 32 32 / 0.28);
+	}
+
+	.ofuse {
+		background: #267da0;
+		border: 1px solid #267da0;
+		box-shadow: 0 6px 16px rgb(38 125 160 / 0.3);
 	}
 
 	.mark {
@@ -456,7 +476,8 @@
 		line-height: 1.4;
 	}
 
-	.kofi .copy strong {
+	.kofi .copy strong,
+	.ofuse .copy strong {
 		font-size: 16px;
 	}
 
@@ -534,7 +555,8 @@
 			animation: arrive 0.32s cubic-bezier(0.2, 0.8, 0.2, 1);
 		}
 
-		.kofi {
+		.kofi,
+		.ofuse {
 			transition:
 				transform 180ms ease,
 				box-shadow 180ms ease;
@@ -543,6 +565,11 @@
 		.kofi:hover {
 			transform: translateY(-1px);
 			box-shadow: 0 8px 22px rgb(32 32 32 / 0.38);
+		}
+
+		.ofuse:hover {
+			transform: translateY(-1px);
+			box-shadow: 0 8px 22px rgb(38 125 160 / 0.42);
 		}
 	}
 
