@@ -87,7 +87,8 @@
 		onclose={() => (open = false)}
 		onpointerdown={(event) => (pressedOutside = outside(event))}
 		onclick={(event) => {
-			if (pressedOutside && outside(event)) dialog?.close();
+			if (pressedOutside && event.target === dialog && outside(event)) dialog?.close();
+			pressedOutside = false;
 		}}
 	>
 		<header>
